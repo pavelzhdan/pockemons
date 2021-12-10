@@ -1,16 +1,16 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const webpack = require('webpack');
 
 module.exports = {
     entry: {
-        main: path.resolve(__dirname, './src/index.js'),
+        main: path.resolve(__dirname, './src/index.tsx'),
     },
     output: {
         path: path.resolve(__dirname, './dist'),
         filename: '[name].bundle.js',
     },
+    devtool: 'inline-source-map',
     mode: "development",
     devServer: {
         historyApiFallback: true,
@@ -21,6 +21,11 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
             {
                 test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
                 type: 'asset/resource',
@@ -35,14 +40,14 @@ module.exports = {
             },
         ]
     },
-
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './template.html'),
             filename: 'index.html',
         }),
         new CleanWebpackPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-
     ],
 }
