@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "start": "webpack serve"
+    "start": "webpack serve",
+    "prettier-format": "prettier --config .prettierrc --write \"src/**/*.tsx\"",
+    "eslint-format": "eslint src/* --fix"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +24,8 @@
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-react-hooks": "^4.3.0",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^4.3.8",
+    "lint-staged": "^12.1.2",
     "node-sass": "^7.0.0",
     "postcss-loader": "^6.2.1",
     "postcss-preset-env": "^7.0.1",
