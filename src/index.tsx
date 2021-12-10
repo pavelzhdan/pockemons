@@ -1,4 +1,3 @@
 import './styles/main.scss';
 
-console
-  .log('interesting');
+console.log('interesting');
