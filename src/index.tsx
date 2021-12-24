@@ -1,3 +1,13 @@
 import './styles/main.scss';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import App from './App';
+import store from './store/store';
 
-console.log('interesting');
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root') || document.querySelectorAll('body')[0],
+);
