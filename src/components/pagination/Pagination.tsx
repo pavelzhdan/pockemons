@@ -1,6 +1,7 @@
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { nextPage, prevPage, setPageSize } from '../store/pockemonSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { nextPage, prevPage, setPageSize } from '../../store/pockemonSlice';
+import './pagination.scss';
 
 const Pagination = function (): React.ReactElement {
   const dispatch = useAppDispatch();

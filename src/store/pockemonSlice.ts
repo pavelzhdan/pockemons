@@ -14,7 +14,10 @@ interface initialStateProps {
     specialAttack: number;
     specialDefence: number;
     speed: number;
+    height: number,
+    weight: number,
     abilities: { ability: { name: string } }[];
+    url: string
   }[];
   searchField: string;
   totalQuantity: number;
@@ -97,7 +100,7 @@ export const paginationSlice = createSlice({
       state.previousUrl = action.payload.previous;
       state.nextUrl = action.payload.next;
       state.items = action.payload.results;
-      state.itemsToShow = { ...state.items };
+      state.itemsToShow = [...state.items];
     },
     addAllPockemons: (
       state: initialStateProps,
@@ -110,13 +113,13 @@ export const paginationSlice = createSlice({
       action: PayloadAction<{ name: string; url: string }[] | []>,
     ) => {
       state.filteredItems = action.payload;
-      state.itemsToShow = { ...state.filteredItems };
+      state.itemsToShow = [...state.filteredItems];
     },
     nothingToShow: (state: initialStateProps) => {
       state.itemsToShow = [];
     },
     searchEmpty: (state: initialStateProps) => {
-      state.itemsToShow = { ...state.items };
+      state.itemsToShow = [...state.items];
     },
     addToComparison: (
       state: initialStateProps,
@@ -135,7 +138,10 @@ export const paginationSlice = createSlice({
         specialAttack: number;
         specialDefence: number;
         speed: number;
-        abilities: [];
+        height: number,
+        weight: number,
+        abilities: [],
+        url: string,
       }>,
     ) => {
       state.comperisonItems.push(action.payload);

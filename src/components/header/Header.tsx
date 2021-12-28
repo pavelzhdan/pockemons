@@ -1,15 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from '../assets/International_Pokémon_logo.png';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { RootState } from '../store/store';
+import { Link, useLocation } from 'react-router-dom';
+import logo from '../../assets/International_Pokémon_logo.png';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+
+import { RootState } from '../../store/store';
 import {
   showSearchResults,
   setSearch,
   searchEmpty,
-} from '../store/pockemonSlice';
+} from '../../store/pockemonSlice';
+import './header.scss';
 
 const Header = function (): React.ReactElement {
+  const location = useLocation();
+  let pathname = '';
+
+  if (location.pathname === '/') {
+    pathname = 'comparison';
+  }
+
   const [searchValue, setSearchValue] = React.useState<string>('');
   const allItems = useAppSelector(
     (state: RootState) => state.pagination.allItems,
@@ -37,13 +46,20 @@ const Header = function (): React.ReactElement {
 
   return (
     <header>
-      <img src={logo} alt="Pockemon" width={150} />
-      <input
-        value={searchValue}
-        onChange={(ev: React.ChangeEvent<HTMLInputElement>) => setSearchValue(ev.target.value)}
-        placeholder="find your Pockemon!"
-      />
-      <Link to="/comparison">Go to comarison</Link>
+      <div className="wrapper">
+        <img src={logo} alt="Pockemon" width={150} />
+        {location.pathname === '/' && (
+          <input
+            value={searchValue}
+            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => setSearchValue(ev.target.value)}
+            placeholder="find your Pockemon!"
+          />
+        )}
+        <Link to={`/${pathname}`} className="comparison-button">
+          Go to
+          {pathname ? 'comparison' : 'catalog'}
+        </Link>
+      </div>
     </header>
   );
 };

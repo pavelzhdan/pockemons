@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { addPockemonUrl } from '../store/pockeonPageSlice';
-import { toggleComparison } from '../store/pockemonSlice';
-import { RootState } from '../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { addPockemonUrl } from '../../store/pockeonPageSlice';
+import { toggleComparison } from '../../store/pockemonSlice';
+import { RootState } from '../../store/store';
+import './pockemonCard.scss';
 
 interface PockemonCardProps {
   name: string;
@@ -17,7 +18,9 @@ const PockemonCard = function (props: PockemonCardProps): React.ReactElement {
     (state: RootState) => state.pagination.addedToComparison,
   );
 
-  const isChecked = addedPockemon.some((item) => item.name === pockemonName && item.url === link);
+  const isChecked = addedPockemon.some(
+    (item) => item.name === pockemonName && item.url === link,
+  );
 
   const dispatch = useAppDispatch();
   const handlerPockemonCardClick = () => dispatch(addPockemonUrl(link));
@@ -32,7 +35,7 @@ const PockemonCard = function (props: PockemonCardProps): React.ReactElement {
         {pockemonName}
       </Link>
       <label htmlFor={pockemonName}>
-        Add to compare
+        Add to comparison
         <input
           type="checkbox"
           onChange={handlerComparisonToggle}
