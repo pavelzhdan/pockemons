@@ -4,8 +4,8 @@ import { RootState } from '../store/store';
 import { addAllPockemons, paginationActions } from '../store/pockemonSlice';
 import PockemonCard from '../components/pockemonCard/PockemonCard';
 import LoadingSpinner from '../components/loadingSpinner/LoadingSpinner';
-import MainLayout from '../components/layout/MainLayout';
 import Pagination from '../components/pagination/Pagination';
+import MainLayout from '../components/layout/MainLayout';
 
 const Catalogue = function (): React.ReactElement {
   const dispatch = useAppDispatch();
