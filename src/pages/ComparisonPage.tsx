@@ -17,27 +17,29 @@ const ComparisonPage = function (): React.ReactElement {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    pockemons.map((pockemon) => (
-      fetch(pockemon.url)
-        .then((response) => response.json())
-        .then((data) => {
-          const addedData = {
-            pockemonName: data.name,
-            image: data.sprites.front_default,
-            hp: data.stats[0].base_stat,
-            attack: data.stats[1].base_stat,
-            defence: data.stats[2].base_stat,
-            specialAttack: data.stats[3].base_stat,
-            specialDefence: data.stats[4].base_stat,
-            speed: data.stats[5].base_stat,
-            height: data.height,
-            weight: data.weight,
-            abilities: data.abilities,
-            url: pockemon.url,
-          };
-          dispatch(addToShowComparison(addedData));
-        })
-    ));
+    pockemons.forEach((pockemon) => {
+      if (!comparison.some((item) => item.url === pockemon.url)) {
+        fetch(pockemon.url)
+          .then((response) => response.json())
+          .then((data) => {
+            const addedData = {
+              pockemonName: data.name,
+              image: data.sprites.front_default,
+              hp: data.stats[0].base_stat,
+              attack: data.stats[1].base_stat,
+              defence: data.stats[2].base_stat,
+              specialAttack: data.stats[3].base_stat,
+              specialDefence: data.stats[4].base_stat,
+              speed: data.stats[5].base_stat,
+              height: data.height,
+              weight: data.weight,
+              abilities: data.abilities,
+              url: pockemon.url,
+            };
+            dispatch(addToShowComparison(addedData));
+          });
+      }
+    });
   }, []);
 
   const handlerPockemonLinkClick = (link: string) => dispatch(addPockemonUrl(link));
