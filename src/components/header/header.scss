@@ -28,6 +28,11 @@ header {
       padding: 8px;
       text-decoration: none;
       color: black;
+
+      &-block {
+        border: 1px solid #6B520EFF;
+        background-color: #6B520EFF;
+      }
     }
   }
 }

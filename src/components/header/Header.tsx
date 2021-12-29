@@ -7,7 +7,7 @@ import { RootState } from '../../store/store';
 import {
   showSearchResults,
   setSearch,
-  searchEmpty,
+  searchEmpty, deleteShowComparison,
 } from '../../store/pockemonSlice';
 import './header.scss';
 
@@ -20,12 +20,10 @@ const Header = function (): React.ReactElement {
   }
 
   const [searchValue, setSearchValue] = React.useState<string>('');
-  const allItems = useAppSelector(
-    (state: RootState) => state.pagination.allItems,
+  const { allItems, searchField, addedToComparison } = useAppSelector(
+    (state: RootState) => state.pagination,
   );
-  const searchField = useAppSelector(
-    (state: RootState) => state.pagination.searchField,
-  );
+
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
@@ -55,8 +53,18 @@ const Header = function (): React.ReactElement {
             placeholder="find your Pockemon!"
           />
         )}
-        <Link to={`/${pathname}`} className="comparison-button">
+        <Link
+          to={`/${pathname}`}
+          className={`comparison-button ${addedToComparison.length === 0 && 'comparison-button-block'}`}
+          onClick={(ev) => {
+            if (addedToComparison.length === 0) {
+              ev.preventDefault();
+            }
+            dispatch(deleteShowComparison());
+          }}
+        >
           Go to
+          {' '}
           {pathname ? 'comparison' : 'catalog'}
         </Link>
       </div>

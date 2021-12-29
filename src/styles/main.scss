@@ -27,7 +27,7 @@ body {
 
 .pockemon-page-content {
   display: flex;
-  width: 300px;
+  width: 400px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -62,6 +62,7 @@ body {
 
 .pockemon-table {
   width: 100%;
+  align-self: flex-start;
   table, th, td {
     border-collapse: collapse;
     border: 1px solid black;

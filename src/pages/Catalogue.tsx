@@ -1,4 +1,5 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { RootState } from '../store/store';
 import { addAllPockemons, paginationActions } from '../store/pockemonSlice';
@@ -40,7 +41,7 @@ const Catalogue = function (): React.ReactElement {
       {itemsToShow.length === 0 && <LoadingSpinner />}
       <div className="wrapper cards-container">
         {itemsToShow.map((item: { name: string; url: string }) => (
-          <PockemonCard name={item.name} link={item.url} key={item.name} />
+          <PockemonCard name={item.name} link={item.url} key={uuidv4()} />
         ))}
       </div>
       {itemsToShow.length !== 0 && <Pagination />}

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { RootState } from '../store/store';
 import { addToShowComparison } from '../store/pockemonSlice';
@@ -7,18 +8,15 @@ import MainLayout from '../components/layout/MainLayout';
 import { addPockemonUrl } from '../store/pockeonPageSlice';
 
 const ComparisonPage = function (): React.ReactElement {
-  const pockemons = useAppSelector(
-    (state: RootState) => state.pagination.addedToComparison,
-  );
-  const comparison = useAppSelector(
-    (state: RootState) => state.pagination.comperisonItems,
+  const { comperisonItems, addedToComparison } = useAppSelector(
+    (state: RootState) => state.pagination,
   );
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    pockemons.forEach((pockemon) => {
-      if (!comparison.some((item) => item.url === pockemon.url)) {
+    addedToComparison.forEach((pockemon) => {
+      if (!comperisonItems.some((item) => item.url === pockemon.url)) {
         fetch(pockemon.url)
           .then((response) => response.json())
           .then((data) => {
@@ -76,8 +74,8 @@ const ComparisonPage = function (): React.ReactElement {
           </tr>
         </thead>
         <tbody>
-          {comparison.map((comparisonItem, index) => (
-            <tr key={index.toString()}>
+          {comperisonItems.map((comparisonItem) => (
+            <tr key={uuidv4()}>
               <td>
                 <Link
                   to={`/${comparisonItem.pockemonName}`}
@@ -99,7 +97,7 @@ const ComparisonPage = function (): React.ReactElement {
               <td>{comparisonItem.weight}</td>
               <td>
                 {comparisonItem.abilities.map((abilityItem) => (
-                  <div key={abilityItem.ability.name}>
+                  <div key={uuidv4()}>
                     {abilityItem.ability.name}
                   </div>
                 ))}

@@ -146,6 +146,11 @@ export const paginationSlice = createSlice({
     ) => {
       state.comperisonItems.push(action.payload);
     },
+    deleteShowComparison: (
+      state: initialStateProps,
+    ) => {
+      state.comperisonItems = [];
+    },
     toggleComparison(
       state: initialStateProps,
       action: PayloadAction<{ name: string; url: string }>,
@@ -153,6 +158,7 @@ export const paginationSlice = createSlice({
       const newArray = state.addedToComparison.filter(
         (item) => item.name !== action.payload.name,
       );
+      console.log(newArray);
       if (newArray.length === state.addedToComparison.length) {
         state.addedToComparison.push(action.payload);
       } else {
@@ -173,6 +179,7 @@ export const {
   searchEmpty,
   toggleComparison,
   addToShowComparison,
+  deleteShowComparison,
 } = paginationSlice.actions;
 
 export const paginationActions = paginationSlice.actions;

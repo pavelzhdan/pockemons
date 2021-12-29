@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import {
   addAbilitiesDescription,
@@ -16,84 +17,88 @@ const PockemonPage = function (): React.ReactElement {
 
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [isLoadingAbilities, setIsLoadingAbilities] = React.useState<boolean>(true);
 
   useEffect(() => {
-    fetch(currentUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        dispatch(addPockemon(data));
-      });
-    setIsLoading(false);
+    if (currentUrl) {
+      fetch(currentUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          dispatch(addPockemon(data));
+        });
+      setIsLoading(false);
+    }
   }, []);
 
   useEffect((): void => {
     if (currentPockemon) {
+      const abilitiesToAdd: { name: string; description: string }[] = [];
       currentPockemon.abilities.map(
-        (item: { ability: { name: string; url: string } }) => (
-          fetch(item.ability.url)
-            .then((response) => response.json())
-            .then((data) => {
-              const ability = {
-                name: data.name,
-                description: data.effect_entries[1].effect,
-              };
-              dispatch(addAbilitiesDescription(ability));
-            })
-        ),
+        (item: { ability: { name: string; url: string } }, index: number) => fetch(item.ability.url)
+          .then((response) => response.json())
+          .then((data) => {
+            const [filteredData] = data.effect_entries.filter(
+              (position: { language: { name: string } }) => position.language.name === 'en',
+            );
+            abilitiesToAdd.push({
+              name: data.name,
+              description: filteredData.effect,
+            });
+            if (index === currentPockemon.abilities.length - 1) {
+              dispatch(addAbilitiesDescription(abilitiesToAdd));
+              setIsLoadingAbilities(false);
+            }
+          }),
       );
-      setIsLoading(false);
     }
   }, [currentPockemon]);
 
   return (
     <MainLayout>
-      {!isLoading
-      && currentPockemon
-      && (
-      <div className="wrapper pockemon-page">
-        <h1 className="pockemon-page-header">{currentPockemon.name}</h1>
-        <div className="pockemon-page-content">
-          <img src={currentPockemon.sprites.front_default} alt="Pockemon" width={200} />
-          <div className="pockemon-page-info">
-            <div className="pockemon-page-type-container">
-              {currentPockemon.types.map(
-                (slot: {type: { name: string; url: string }}, index: number) => (
-                  <div key={index.toString()} className="pockemon-page-types">{slot.type.name}</div>
-                ),
-              )}
+      {!isLoading && currentPockemon && (
+        <div className="wrapper pockemon-page">
+          <h1 className="pockemon-page-header">{currentPockemon.name}</h1>
+          <div className="pockemon-page-content">
+            <img
+              src={currentPockemon.sprites.front_default}
+              alt="Pockemon"
+              width={200}
+              height={200}
+            />
+            <div className="pockemon-page-info">
+              <div className="pockemon-page-type-container">
+                {currentPockemon.types.map(
+                  (slot: { type: { name: string; url: string } }) => (
+                    <div key={uuidv4()} className="pockemon-page-types">
+                      {slot.type.name}
+                    </div>
+                  ),
+                )}
+              </div>
+              <dl className="pockemon-page-stats-list">
+                {currentPockemon.stats.map(
+                  (item: {
+                    base_stat: number;
+                    effort: number;
+                    stat: { name: string; url: string };
+                  }) => (
+                    <React.Fragment key={uuidv4()}>
+                      <dt>{item.stat.name}</dt>
+                      <dd>{item.base_stat}</dd>
+                    </React.Fragment>
+                  ),
+                )}
+              </dl>
+              {!isLoadingAbilities
+                && abilities.map((item: { name: string; description: string }) => (
+                  <Tooltip content={item.description} key={uuidv4()}>
+                    <p>{item.name}</p>
+                  </Tooltip>
+                ))}
+              {isLoadingAbilities && <LoadingSpinner />}
             </div>
-            <dl className="pockemon-page-stats-list">
-              {currentPockemon.stats.map(
-                (
-                  item: {
-                      base_stat: number;
-                      effort: number;
-                      stat: { name: string; url: string };
-                    },
-                  index: number,
-                ) => (
-                  <React.Fragment key={item.stat.name}>
-                    <dt key={index.toString()}>
-                      {item.stat.name}
-                    </dt>
-                    <dd>
-                      {item.base_stat}
-                    </dd>
-                  </React.Fragment>
-                ),
-              )}
-            </dl>
-            {abilities.length !== 0
-            && abilities.map(
-              (item: { name: string; description: string }, index: number) => (
-                <Tooltip content={item.description} key={index.toString()}>
-                  <p>{item.name}</p>
-                </Tooltip>
-              ),
-            )}
           </div>
         </div>
-      </div>
       )}
       {isLoading && <LoadingSpinner />}
     </MainLayout>

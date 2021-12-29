@@ -27,9 +27,10 @@ export const pockemonPageSlice = createSlice({
     },
     addAbilitiesDescription: (
       state: initialStateProps,
-      action: PayloadAction<{ name: string; description: string }>,
+      action: PayloadAction<{ name: string; description: string }[]>,
     ) => {
-      state.abilities.push(action.payload);
+      state.abilities = [];
+      state.abilities.push(...action.payload);
     },
   },
 });
