@@ -90,11 +90,17 @@ const PockemonPage = function (): React.ReactElement {
                 )}
               </dl>
               {!isLoadingAbilities
-                && abilities.map((item: { name: string; description: string }) => (
-                  <Tooltip content={item.description} key={uuidv4()}>
-                    <p>{item.name}</p>
-                  </Tooltip>
+              && (
+              <ul>
+                {abilities.map((item: {name: string; description: string}) => (
+                  <li key={uuidv4()}>
+                    <Tooltip content={item.description} key={uuidv4()}>
+                      <span>{item.name}</span>
+                    </Tooltip>
+                  </li>
                 ))}
+              </ul>
+              )}
               {isLoadingAbilities && <LoadingSpinner />}
             </div>
           </div>
