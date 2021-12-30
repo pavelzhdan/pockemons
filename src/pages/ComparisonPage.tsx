@@ -6,11 +6,13 @@ import { RootState } from '../store/store';
 import { addToShowComparison } from '../store/pockemonSlice';
 import MainLayout from '../components/layout/MainLayout';
 import { addPockemonUrl } from '../store/pockeonPageSlice';
+import LoadingSpinner from '../components/loadingSpinner/LoadingSpinner';
 
 const ComparisonPage = function (): React.ReactElement {
   const { comperisonItems, addedToComparison } = useAppSelector(
     (state: RootState) => state.pagination,
   );
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   const dispatch = useAppDispatch();
 
@@ -37,6 +39,7 @@ const ComparisonPage = function (): React.ReactElement {
             dispatch(addToShowComparison(addedData));
           });
       }
+      setIsLoading(false);
     });
   }, []);
 
@@ -44,68 +47,70 @@ const ComparisonPage = function (): React.ReactElement {
 
   return (
     <MainLayout>
-      <table className="pockemon-table">
-        <colgroup>
-          <col style={{ width: '100px' }} />
-          <col style={{ width: '100px' }} />
-          <col style={{ width: '100px' }} />
-          <col style={{ width: '100px' }} />
-          <col style={{ width: '100px' }} />
-          <col style={{ width: '100px' }} />
-          <col style={{ width: '100px' }} />
-          <col style={{ width: '100px' }} />
-          <col style={{ width: '100px' }} />
-          <col style={{ width: '100px' }} />
-          <col />
-        </colgroup>
-        <thead>
-          <tr>
-            <td>name</td>
-            <td>image</td>
-            <td>hp</td>
-            <td>attack</td>
-            <td>defence</td>
-            <td>Special Attack</td>
-            <td>Special defence</td>
-            <td>speed</td>
-            <td>height</td>
-            <td>weight</td>
-            <td>abilities</td>
-          </tr>
-        </thead>
-        <tbody>
-          {comperisonItems.map((comparisonItem) => (
-            <tr key={uuidv4()}>
-              <td>
-                <Link
-                  to={`/${comparisonItem.pockemonName}`}
-                  onClick={() => handlerPockemonLinkClick(comparisonItem.url)}
-                >
-                  {comparisonItem.pockemonName}
-                </Link>
-              </td>
-              <td>
-                <img src={comparisonItem.image} alt="pockemon" width={96} />
-              </td>
-              <td>{comparisonItem.hp}</td>
-              <td>{comparisonItem.attack}</td>
-              <td>{comparisonItem.defence}</td>
-              <td>{comparisonItem.specialAttack}</td>
-              <td>{comparisonItem.specialDefence}</td>
-              <td>{comparisonItem.speed}</td>
-              <td>{comparisonItem.height}</td>
-              <td>{comparisonItem.weight}</td>
-              <td>
-                {comparisonItem.abilities.map((abilityItem) => (
-                  <div key={uuidv4()}>
-                    {abilityItem.ability.name}
-                  </div>
-                ))}
-              </td>
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <table className="pockemon-table">
+          <colgroup>
+            <col style={{ width: '100px' }} />
+            <col style={{ width: '100px' }} />
+            <col style={{ width: '100px' }} />
+            <col style={{ width: '100px' }} />
+            <col style={{ width: '100px' }} />
+            <col style={{ width: '100px' }} />
+            <col style={{ width: '100px' }} />
+            <col style={{ width: '100px' }} />
+            <col style={{ width: '100px' }} />
+            <col style={{ width: '100px' }} />
+            <col />
+          </colgroup>
+          <thead>
+            <tr>
+              <td>name</td>
+              <td>image</td>
+              <td>hp</td>
+              <td>attack</td>
+              <td>defence</td>
+              <td>Special Attack</td>
+              <td>Special defence</td>
+              <td>speed</td>
+              <td>height</td>
+              <td>weight</td>
+              <td>abilities</td>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {comperisonItems.map((comparisonItem) => (
+              <tr key={uuidv4()}>
+                <td>
+                  <Link
+                    to={`/${comparisonItem.pockemonName}`}
+                    onClick={() => handlerPockemonLinkClick(comparisonItem.url)}
+                  >
+                    {comparisonItem.pockemonName}
+                  </Link>
+                </td>
+                <td>
+                  <img src={comparisonItem.image} alt="pockemon" width={96} />
+                </td>
+                <td>{comparisonItem.hp}</td>
+                <td>{comparisonItem.attack}</td>
+                <td>{comparisonItem.defence}</td>
+                <td>{comparisonItem.specialAttack}</td>
+                <td>{comparisonItem.specialDefence}</td>
+                <td>{comparisonItem.speed}</td>
+                <td>{comparisonItem.height}</td>
+                <td>{comparisonItem.weight}</td>
+                <td>
+                  {comparisonItem.abilities.map((abilityItem) => (
+                    <div key={uuidv4()}>{abilityItem.ability.name}</div>
+                  ))}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </MainLayout>
   );
 };
