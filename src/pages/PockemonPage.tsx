@@ -26,7 +26,6 @@ const PockemonPage = function (): React.ReactElement {
         .then((data) => {
           dispatch(addPockemon(data));
         });
-      setIsLoading(false);
     }
   }, []);
 
@@ -50,12 +49,13 @@ const PockemonPage = function (): React.ReactElement {
             }
           }),
       );
+      setIsLoading(false);
     }
   }, [currentPockemon]);
 
   return (
     <MainLayout>
-      {!isLoading && currentPockemon && (
+      {!isLoading && (
         <div className="wrapper pockemon-page">
           <h1 className="pockemon-page-header">{currentPockemon.name}</h1>
           <div className="pockemon-page-content">
