@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { RootState } from '../store/store';
-import { addToShowComparison } from '../store/pockemonSlice';
+import { addToShowComparison, deleteShowComparison, toggleComparison } from '../store/pockemonSlice';
 import MainLayout from '../components/layout/MainLayout';
 import { addPockemonUrl } from '../store/pockeonPageSlice';
 import LoadingSpinner from '../components/loadingSpinner/LoadingSpinner';
@@ -13,7 +13,7 @@ const ComparisonPage = function (): React.ReactElement {
     (state: RootState) => state.pagination,
   );
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -42,9 +42,18 @@ const ComparisonPage = function (): React.ReactElement {
       }
       setIsLoading(false);
     });
-  }, []);
+  }, [addedToComparison]);
+
+  if (addedToComparison.length === 0) {
+    navigate('/');
+  }
 
   const handlerPockemonLinkClick = (link: string) => dispatch(addPockemonUrl(link));
+
+  const handlerComparisonToggle = (name: string, link: string) => {
+    dispatch(deleteShowComparison());
+    dispatch(toggleComparison({ name, url: link }));
+  };
 
   return (
     <MainLayout>
@@ -55,15 +64,16 @@ const ComparisonPage = function (): React.ReactElement {
           <colgroup>
             <col style={{ width: '100px' }} />
             <col style={{ width: '100px' }} />
-            <col style={{ width: '100px' }} />
-            <col style={{ width: '100px' }} />
-            <col style={{ width: '100px' }} />
-            <col style={{ width: '100px' }} />
-            <col style={{ width: '100px' }} />
-            <col style={{ width: '100px' }} />
-            <col style={{ width: '100px' }} />
-            <col style={{ width: '100px' }} />
+            <col style={{ width: '50px' }} />
+            <col style={{ width: '70px' }} />
+            <col style={{ width: '70px' }} />
+            <col style={{ width: '70px' }} />
+            <col style={{ width: '70px' }} />
+            <col style={{ width: '70px' }} />
+            <col style={{ width: '70px' }} />
+            <col style={{ width: '70px' }} />
             <col />
+            <col style={{ width: '70px' }} />
           </colgroup>
           <thead>
             <tr>
@@ -78,6 +88,7 @@ const ComparisonPage = function (): React.ReactElement {
               <td>height</td>
               <td>weight</td>
               <td>abilities</td>
+              <td />
             </tr>
           </thead>
           <tbody>
@@ -106,6 +117,17 @@ const ComparisonPage = function (): React.ReactElement {
                   {comparisonItem.abilities.map((abilityItem) => (
                     <div key={uuidv4()}>{abilityItem.ability.name}</div>
                   ))}
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    onClick={() => handlerComparisonToggle(
+                      comparisonItem.pockemonName,
+                      comparisonItem.url,
+                    )}
+                  >
+                    Remove
+                  </button>
                 </td>
               </tr>
             ))}
