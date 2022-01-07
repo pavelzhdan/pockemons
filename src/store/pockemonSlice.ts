@@ -5,7 +5,7 @@ interface initialStateProps {
   allItems: { name: string; url: string }[];
   itemsToShow: { name: string; url: string }[];
   filteredItems: { name: string; url: string }[];
-  comperisonItems: {
+  comparisonItems: {
     pockemonName: string;
     image: string;
     hp: number;
@@ -34,7 +34,7 @@ const initialState: initialStateProps = {
   allItems: [],
   itemsToShow: [],
   filteredItems: [],
-  comperisonItems: [],
+  comparisonItems: [],
   searchField: '',
   totalQuantity: 0,
   itemsOffset: '0',
@@ -144,12 +144,12 @@ export const paginationSlice = createSlice({
         url: string,
       }>,
     ) => {
-      state.comperisonItems.push(action.payload);
+      state.comparisonItems.push(action.payload);
     },
     deleteShowComparison: (
       state: initialStateProps,
     ) => {
-      state.comperisonItems = [];
+      state.comparisonItems = [];
     },
     toggleComparison(
       state: initialStateProps,

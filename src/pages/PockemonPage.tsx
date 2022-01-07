@@ -14,7 +14,6 @@ const PockemonPage = function (): React.ReactElement {
   const { currentUrl, currentPockemon, abilities } = useAppSelector(
     (state: RootState) => state.pockemonPage,
   );
-
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [isLoadingAbilities, setIsLoadingAbilities] = React.useState<boolean>(true);
@@ -25,7 +24,8 @@ const PockemonPage = function (): React.ReactElement {
         .then((response) => response.json())
         .then((data) => {
           dispatch(addPockemon(data));
-        });
+        })
+        .catch((error) => alert(error));
     }
   }, []);
 
@@ -47,7 +47,8 @@ const PockemonPage = function (): React.ReactElement {
               dispatch(addAbilitiesDescription(abilitiesToAdd));
               setIsLoadingAbilities(false);
             }
-          }),
+          })
+          .catch((error) => alert(error)),
       );
       setIsLoading(false);
     }

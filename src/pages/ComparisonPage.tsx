@@ -9,7 +9,7 @@ import { addPockemonUrl } from '../store/pockeonPageSlice';
 import LoadingSpinner from '../components/loadingSpinner/LoadingSpinner';
 
 const ComparisonPage = function (): React.ReactElement {
-  const { comperisonItems, addedToComparison } = useAppSelector(
+  const { comparisonItems, addedToComparison } = useAppSelector(
     (state: RootState) => state.pagination,
   );
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -18,7 +18,7 @@ const ComparisonPage = function (): React.ReactElement {
 
   useEffect(() => {
     addedToComparison.forEach((pockemon) => {
-      if (!comperisonItems.some((item) => item.url === pockemon.url)) {
+      if (!comparisonItems.some((item) => item.url === pockemon.url)) {
         fetch(pockemon.url)
           .then((response) => response.json())
           .then((data) => {
@@ -37,7 +37,8 @@ const ComparisonPage = function (): React.ReactElement {
               url: pockemon.url,
             };
             dispatch(addToShowComparison(addedData));
-          });
+          })
+          .catch((error) => alert(error));
       }
       setIsLoading(false);
     });
@@ -80,7 +81,7 @@ const ComparisonPage = function (): React.ReactElement {
             </tr>
           </thead>
           <tbody>
-            {comperisonItems.map((comparisonItem) => (
+            {comparisonItems.map((comparisonItem) => (
               <tr key={uuidv4()}>
                 <td>
                   <Link

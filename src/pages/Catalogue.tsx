@@ -21,7 +21,8 @@ const Catalogue = function (): React.ReactElement {
       .then((data) => data.json())
       .then((response) => {
         dispatch(paginationActions.fetchData(response));
-      });
+      })
+      .catch((error) => alert(error));
   }, [itemsOffset, itemsPerPage]);
 
   React.useEffect(() => {
@@ -32,7 +33,8 @@ const Catalogue = function (): React.ReactElement {
         .then((response) => response.json())
         .then((data) => {
           dispatch(addAllPockemons(data.results));
-        });
+        })
+        .catch((error) => alert(error));
     }
   }, [totalQuantity]);
 
