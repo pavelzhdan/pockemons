@@ -41,7 +41,9 @@ const Header = function (): React.ReactElement {
           dispatch(searchSuccess());
           dispatch(showSearchResults(selected));
         }
-      } else if (searchValue.length === 0) {
+      }
+
+      if (searchValue === '') {
         dispatch(searchEmpty());
       }
     }, 150);
@@ -63,7 +65,7 @@ const Header = function (): React.ReactElement {
           to={`/${pathname}`}
           className={`comparison-button ${
             addedToComparison.length === 0
-            && location.pathname !== `/${currentPockemon.name}`
+            && location.pathname !== `/${currentPockemon?.name}`
             && 'comparison-button-block'
           }`}
           onClick={(ev) => {

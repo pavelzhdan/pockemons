@@ -120,6 +120,7 @@ export const paginationSlice = createSlice({
       state.searchFailed = false;
     },
     searchEmpty: (state: initialStateProps) => {
+      state.filteredItems = [];
       state.itemsToShow = [...state.items];
     },
     addToComparison: (
