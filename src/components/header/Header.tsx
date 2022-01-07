@@ -6,8 +6,10 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { RootState } from '../../store/store';
 import {
   showSearchResults,
-  setSearch,
-  searchEmpty, deleteShowComparison,
+  searchEmpty,
+  deleteShowComparison,
+  searchFailed,
+  searchSuccess,
 } from '../../store/pockemonSlice';
 import './header.scss';
 
@@ -20,28 +22,31 @@ const Header = function (): React.ReactElement {
   }
 
   const [searchValue, setSearchValue] = React.useState<string>('');
-  const { allItems, searchField, addedToComparison } = useAppSelector(
+  const { allItems, addedToComparison } = useAppSelector(
     (state: RootState) => state.pagination,
+  );
+  const { currentPockemon } = useAppSelector(
+    (state: RootState) => state.pockemonPage,
   );
 
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     const searchTimer = setTimeout(() => {
-      if (
-        searchField.length !== searchValue.length
-        && searchValue.length !== 0
-      ) {
-        dispatch(setSearch(searchValue));
+      if (searchValue.length !== 0) {
         const selected = allItems.filter((item) => item.name.includes(searchValue));
-        dispatch(showSearchResults(selected));
-      }
-      if (searchValue.length === 0) {
+        if (selected.length === 0) {
+          dispatch(searchFailed());
+        } else {
+          dispatch(searchSuccess());
+          dispatch(showSearchResults(selected));
+        }
+      } else if (searchValue.length === 0) {
         dispatch(searchEmpty());
       }
     }, 150);
     return () => clearTimeout(searchTimer);
-  }, [searchValue, searchField]);
+  }, [searchValue]);
 
   return (
     <header>
@@ -56,9 +61,16 @@ const Header = function (): React.ReactElement {
         )}
         <Link
           to={`/${pathname}`}
-          className={`comparison-button ${addedToComparison.length === 0 && 'comparison-button-block'}`}
+          className={`comparison-button ${
+            addedToComparison.length === 0
+            && location.pathname !== `/${currentPockemon.name}`
+            && 'comparison-button-block'
+          }`}
           onClick={(ev) => {
-            if (addedToComparison.length === 0) {
+            if (
+              addedToComparison.length === 0
+              && location.pathname !== `/${currentPockemon.name}`
+            ) {
               ev.preventDefault();
             }
             dispatch(deleteShowComparison());

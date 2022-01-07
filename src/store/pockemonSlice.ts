@@ -5,6 +5,7 @@ interface initialStateProps {
   allItems: { name: string; url: string }[];
   itemsToShow: { name: string; url: string }[];
   filteredItems: { name: string; url: string }[];
+  searchFailed: boolean;
   comparisonItems: {
     pockemonName: string;
     image: string;
@@ -19,7 +20,6 @@ interface initialStateProps {
     abilities: { ability: { name: string } }[];
     url: string
   }[];
-  searchField: string;
   totalQuantity: number;
   itemsPerPage: string;
   itemsOffset: string;
@@ -34,8 +34,8 @@ const initialState: initialStateProps = {
   allItems: [],
   itemsToShow: [],
   filteredItems: [],
+  searchFailed: false,
   comparisonItems: [],
-  searchField: '',
   totalQuantity: 0,
   itemsOffset: '0',
   itemsPerPage: '10',
@@ -70,9 +70,6 @@ export const paginationSlice = createSlice({
     },
     setPageSize: (state: initialStateProps, action: PayloadAction<string>) => {
       state.itemsPerPage = action.payload;
-    },
-    setSearch: (state: initialStateProps, action: PayloadAction<string>) => {
-      state.searchField = action.payload;
     },
     nextPage: (
       state: initialStateProps,
@@ -115,8 +112,12 @@ export const paginationSlice = createSlice({
       state.filteredItems = action.payload;
       state.itemsToShow = [...state.filteredItems];
     },
-    nothingToShow: (state: initialStateProps) => {
+    searchFailed: (state: initialStateProps) => {
+      state.searchFailed = true;
       state.itemsToShow = [];
+    },
+    searchSuccess: (state: initialStateProps) => {
+      state.searchFailed = false;
     },
     searchEmpty: (state: initialStateProps) => {
       state.itemsToShow = [...state.items];
@@ -172,8 +173,8 @@ export const {
   setPageSize,
   prevPage,
   addAllPockemons,
-  nothingToShow,
-  setSearch,
+  searchFailed,
+  searchSuccess,
   showSearchResults,
   searchEmpty,
   toggleComparison,

@@ -7,11 +7,12 @@ import PockemonCard from '../components/pockemonCard/PockemonCard';
 import LoadingSpinner from '../components/loadingSpinner/LoadingSpinner';
 import Pagination from '../components/pagination/Pagination';
 import MainLayout from '../components/layout/MainLayout';
+import NoResultsBanner from '../components/noResultsBanner/NoResultsBanner';
 
 const Catalogue = function (): React.ReactElement {
   const dispatch = useAppDispatch();
   const {
-    itemsToShow, itemsOffset, itemsPerPage, totalQuantity,
+    itemsToShow, itemsOffset, itemsPerPage, totalQuantity, searchFailed,
   } = useAppSelector((state: RootState) => state.pagination);
 
   React.useEffect(() => {
@@ -40,13 +41,15 @@ const Catalogue = function (): React.ReactElement {
 
   return (
     <MainLayout>
-      {itemsToShow.length === 0 && <LoadingSpinner />}
-      <div className="wrapper cards-container">
-        {itemsToShow.map((item: { name: string; url: string }) => (
-          <PockemonCard name={item.name} link={item.url} key={uuidv4()} />
-        ))}
-      </div>
-      {itemsToShow.length !== 0 && <Pagination />}
+      {itemsToShow.length === 0 && !searchFailed && <LoadingSpinner />}
+      {searchFailed ? <NoResultsBanner /> : (
+        <div className="wrapper cards-container">
+          {itemsToShow.map((item: { name: string; url: string }) => (
+            <PockemonCard name={item.name} link={item.url} key={uuidv4()} />
+          ))}
+        </div>
+      )}
+      {itemsToShow.length !== 0 && !searchFailed && <Pagination />}
     </MainLayout>
   );
 };
