@@ -5,8 +5,10 @@ import './pagination.scss';
 
 const Pagination = function (): React.ReactElement {
   const dispatch = useAppDispatch();
-  const nextUrlString = useAppSelector((state) => state.pagination.nextUrl);
-  const prevUrlString = useAppSelector((state) => state.pagination.previousUrl);
+  const { previousUrl, nextUrl, itemsPerPage } = useAppSelector(
+    (state) => state.pagination,
+  );
+
   const handlerPageSizeChange = (
     ev: React.ChangeEvent<HTMLSelectElement>,
   ): void => {
@@ -14,8 +16,8 @@ const Pagination = function (): React.ReactElement {
   };
 
   const handlerNextPage = (): void => {
-    if (nextUrlString != null) {
-      fetch(nextUrlString)
+    if (nextUrl) {
+      fetch(nextUrl)
         .then((data) => data.json())
         .then(
           (response: {
@@ -26,13 +28,14 @@ const Pagination = function (): React.ReactElement {
           }) => {
             dispatch(nextPage(response));
           },
-        );
+        )
+        .catch((error) => alert(error));
     }
   };
 
   const handlerPrevPage = (): void => {
-    if (prevUrlString != null) {
-      fetch(prevUrlString)
+    if (previousUrl) {
+      fetch(previousUrl)
         .then((data) => data.json())
         .then(
           (response: {
@@ -43,19 +46,24 @@ const Pagination = function (): React.ReactElement {
           }) => {
             dispatch(prevPage(response));
           },
-        );
+        )
+        .catch((error) => alert(error));
     }
   };
 
   return (
     <div className="pagination">
-      <button type="button" onClick={handlerPrevPage}>prev</button>
-      <button type="button" onClick={handlerNextPage}>next</button>
-      <select onChange={handlerPageSizeChange}>
-        <option>10</option>
-        <option>20</option>
-        <option>50</option>
-        <option>100</option>
+      <button type="button" onClick={handlerPrevPage} disabled={!previousUrl}>
+        prev
+      </button>
+      <button type="button" onClick={handlerNextPage} disabled={!nextUrl}>
+        next
+      </button>
+      <select value={itemsPerPage} onChange={handlerPageSizeChange}>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
       </select>
     </div>
   );
