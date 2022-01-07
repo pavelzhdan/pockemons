@@ -5,7 +5,9 @@ import './pagination.scss';
 
 const Pagination = function (): React.ReactElement {
   const dispatch = useAppDispatch();
-  const { previousUrl, nextUrl, itemsPerPage } = useAppSelector(
+  const {
+    previousUrl, nextUrl, itemsPerPage, totalQuantity,
+  } = useAppSelector(
     (state) => state.pagination,
   );
 
@@ -65,6 +67,10 @@ const Pagination = function (): React.ReactElement {
         <option value="50">50</option>
         <option value="100">100</option>
       </select>
+      <span className="quantity">
+        Total pockemons quantity:
+        {totalQuantity}
+      </span>
     </div>
   );
 };

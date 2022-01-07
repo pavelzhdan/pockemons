@@ -158,7 +158,6 @@ export const paginationSlice = createSlice({
       const newArray = state.addedToComparison.filter(
         (item) => item.name !== action.payload.name,
       );
-      console.log(newArray);
       if (newArray.length === state.addedToComparison.length) {
         state.addedToComparison.push(action.payload);
       } else {

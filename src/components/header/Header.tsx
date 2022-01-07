@@ -35,7 +35,8 @@ const Header = function (): React.ReactElement {
         dispatch(setSearch(searchValue));
         const selected = allItems.filter((item) => item.name.includes(searchValue));
         dispatch(showSearchResults(selected));
-      } else if (searchValue.length === 0) {
+      }
+      if (searchValue.length === 0) {
         dispatch(searchEmpty());
       }
     }, 150);
