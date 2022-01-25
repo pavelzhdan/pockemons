@@ -11,12 +11,16 @@ import { NoResultsBanner } from '../components/noResultsBanner/NoResultsBanner';
 export const Catalogue = (): React.ReactElement => {
   const dispatch = useAppDispatch();
   const {
-    itemsToShow, itemsOffset, itemsPerPage, totalQuantity, searchFailed,
+    itemsToShow,
+    itemsOffset,
+    itemsPerPage,
+    totalQuantity,
+    searchFailed,
   } = useAppSelector((state: RootState) => state.pagination);
 
   React.useEffect(() => {
     fetch(
-      `https://pokeapi.co/api/v2/pokemon/?limit=${itemsPerPage}&offset=${itemsOffset}`,
+      `https://pokeapi.co/api/v2/pokemon/?limit=${itemsPerPage}&offset=${itemsOffset}`
     )
       .then((data) => data.json())
       .then((response) => {
@@ -28,7 +32,7 @@ export const Catalogue = (): React.ReactElement => {
   React.useEffect(() => {
     if (totalQuantity !== 0) {
       fetch(
-        `https://pokeapi.co/api/v2/pokemon/?limit=${totalQuantity}&offset=0`,
+        `https://pokeapi.co/api/v2/pokemon/?limit=${totalQuantity}&offset=0`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -41,7 +45,9 @@ export const Catalogue = (): React.ReactElement => {
   return (
     <>
       {itemsToShow.length === 0 && !searchFailed && <LoadingSpinner />}
-      {searchFailed ? <NoResultsBanner /> : (
+      {searchFailed ? (
+        <NoResultsBanner />
+      ) : (
         <div className="wrapper cards-container">
           {itemsToShow.map((item: { name: string; url: string }) => (
             <PockemonCard name={item.name} link={item.url} key={uuidv4()} />
