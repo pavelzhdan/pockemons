@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { RootState } from '../store/store';
 import { addToShowComparison, deleteShowComparison, toggleComparison } from '../store/pockemonSlice';
-import { MainLayout } from '../components/layout/MainLayout';
 import { addPockemonUrl } from '../store/pockeonPageSlice';
 import { LoadingSpinner } from '../components/loadingSpinner/LoadingSpinner';
 
@@ -56,7 +55,7 @@ export const ComparisonPage = (): React.ReactElement => {
   };
 
   return (
-    <MainLayout>
+    <>
       {isLoading ? (
         <LoadingSpinner />
       ) : (
@@ -134,6 +133,6 @@ export const ComparisonPage = (): React.ReactElement => {
           </tbody>
         </table>
       )}
-    </MainLayout>
+    </>
   );
 };

@@ -7,7 +7,6 @@ import {
 } from '../store/pockeonPageSlice';
 import { RootState } from '../store/store';
 import { Tooltip } from '../components/tooltip/Tooltip';
-import { MainLayout } from '../components/layout/MainLayout';
 import { LoadingSpinner } from '../components/loadingSpinner/LoadingSpinner';
 
 export const PockemonPage: React.FC = () => {
@@ -66,7 +65,7 @@ export const PockemonPage: React.FC = () => {
     }, [currentPockemon]);
 
     return (
-        <MainLayout>
+      <>
             {!isLoading && (
                 <div className="wrapper pockemon-page">
                     <h1 className="pockemon-page-header">
@@ -133,6 +132,6 @@ export const PockemonPage: React.FC = () => {
                 </div>
             )}
             {isLoading && <LoadingSpinner />}
-        </MainLayout>
+      </>
     );
 };

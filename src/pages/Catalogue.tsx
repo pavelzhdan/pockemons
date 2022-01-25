@@ -6,7 +6,6 @@ import { addAllPockemons, paginationActions } from '../store/pockemonSlice';
 import { PockemonCard } from '../components/pockemonCard/PockemonCard';
 import { LoadingSpinner } from '../components/loadingSpinner/LoadingSpinner';
 import { Pagination } from '../components/pagination/Pagination';
-import { MainLayout } from '../components/layout/MainLayout';
 import { NoResultsBanner } from '../components/noResultsBanner/NoResultsBanner';
 
 export const Catalogue = (): React.ReactElement => {
@@ -40,7 +39,7 @@ export const Catalogue = (): React.ReactElement => {
   }, [totalQuantity]);
 
   return (
-    <MainLayout>
+    <>
       {itemsToShow.length === 0 && !searchFailed && <LoadingSpinner />}
       {searchFailed ? <NoResultsBanner /> : (
         <div className="wrapper cards-container">
@@ -50,6 +49,6 @@ export const Catalogue = (): React.ReactElement => {
         </div>
       )}
       {itemsToShow.length !== 0 && !searchFailed && <Pagination />}
-    </MainLayout>
+    </>
   );
 };
