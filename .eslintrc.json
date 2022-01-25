@@ -1,39 +1,44 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
-  "extends": ["plugin:react/recommended", "airbnb"],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
+    "env": {
+        "browser": true,
+        "es2021": true
     },
-    "ecmaVersion": 6,
-    "sourceType": "module"
-  },
-  "plugins": ["react", "@typescript-eslint"],
-  "rules": {
-    "react/require-default-props": 0,
-    "import/prefer-default-export": 0,
-    "jsx-a11y/label-has-associated-control": 0,
-    "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        "ts": "never",
-        "tsx": "never"
-      }
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb",
+        "prettier",
+        "prettier/prettier",
+        "plugin:prettier/recommended"
     ],
-    "no-param-reassign": "warn"
-  },
-  "settings": {
-    "import/resolver": {
-      "typescript": {}
+    "settings": {
+        "import/resolver": {
+            "typescript": {}
+        }
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "no-use-before-define": "off",
+        "import/prefer-default-export": "off",
+        "@typescript-eslint/no-use-before-define": ["error"],
+        "react/jsx-filename-extension": [ "warn", {"extensions": [".tsx"]} ],
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "ts": "never",
+                "tsx": "never"
+            }
+        ]
     }
-  },
-  "globals": {
-    "NodeJS": true
-  }
 }

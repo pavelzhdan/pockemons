@@ -3,13 +3,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { RootState } from '../store/store';
 import { addAllPockemons, paginationActions } from '../store/pockemonSlice';
-import PockemonCard from '../components/pockemonCard/PockemonCard';
-import LoadingSpinner from '../components/loadingSpinner/LoadingSpinner';
-import Pagination from '../components/pagination/Pagination';
-import MainLayout from '../components/layout/MainLayout';
-import NoResultsBanner from '../components/noResultsBanner/NoResultsBanner';
+import { PockemonCard } from '../components/pockemonCard/PockemonCard';
+import { LoadingSpinner } from '../components/loadingSpinner/LoadingSpinner';
+import { Pagination } from '../components/pagination/Pagination';
+import { MainLayout } from '../components/layout/MainLayout';
+import { NoResultsBanner } from '../components/noResultsBanner/NoResultsBanner';
 
-const Catalogue = function (): React.ReactElement {
+export const Catalogue = (): React.ReactElement => {
   const dispatch = useAppDispatch();
   const {
     itemsToShow, itemsOffset, itemsPerPage, totalQuantity, searchFailed,
@@ -53,5 +53,3 @@ const Catalogue = function (): React.ReactElement {
     </MainLayout>
   );
 };
-
-export default Catalogue;

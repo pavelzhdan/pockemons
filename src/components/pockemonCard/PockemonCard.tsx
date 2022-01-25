@@ -11,7 +11,7 @@ interface PockemonCardProps {
   link: string;
 }
 
-const PockemonCard = function (props: PockemonCardProps): React.ReactElement {
+export const PockemonCard = (props: PockemonCardProps): React.ReactElement => {
   const { name: pockemonName, link } = props;
 
   const addedPockemon = useAppSelector(
@@ -47,5 +47,3 @@ const PockemonCard = function (props: PockemonCardProps): React.ReactElement {
     </div>
   );
 };
-
-export default PockemonCard;

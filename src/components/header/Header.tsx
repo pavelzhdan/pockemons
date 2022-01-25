@@ -13,7 +13,7 @@ import {
 } from '../../store/pockemonSlice';
 import './header.scss';
 
-const Header = function (): React.ReactElement {
+export const Header = (): React.ReactElement => {
   const location = useLocation();
   let pathname = '';
 
@@ -86,5 +86,3 @@ const Header = function (): React.ReactElement {
     </header>
   );
 };
-
-export default Header;

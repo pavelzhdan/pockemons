@@ -1,8 +1,8 @@
 import React from 'react';
-import Header from '../header/Header';
+import { Header } from '../header/Header';
 import './MainLayout.scss';
 
-const MainLayout: React.FC = function (props) {
+export const MainLayout: React.FC = (props) => {
   const { children } = props;
 
   return (
@@ -12,4 +12,3 @@ const MainLayout: React.FC = function (props) {
     </>
   );
 };
-export default MainLayout;

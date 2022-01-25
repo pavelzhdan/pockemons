@@ -8,9 +8,9 @@ interface ToolTipProps {
   content: string;
 }
 
-const Tooltip: React.FC<ToolTipProps> = function ({
+export const Tooltip: React.FC<ToolTipProps> = ({
   children, direction = 'top', delay = 400, content,
-}: ToolTipProps) {
+}: ToolTipProps): React.ReactElement => {
   let timeout: NodeJS.Timeout;
   const [active, setActive] = useState(false);
 
@@ -43,5 +43,3 @@ const Tooltip: React.FC<ToolTipProps> = function ({
     </div>
   );
 };
-
-export default Tooltip;

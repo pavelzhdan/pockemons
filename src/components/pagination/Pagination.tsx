@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { nextPage, prevPage, setPageSize } from '../../store/pockemonSlice';
 import './pagination.scss';
 
-const Pagination = function (): React.ReactElement {
+export const Pagination = (): React.ReactElement => {
   const dispatch = useAppDispatch();
   const {
     previousUrl, nextUrl, itemsPerPage, totalQuantity,
@@ -74,5 +74,3 @@ const Pagination = function (): React.ReactElement {
     </div>
   );
 };
-
-export default Pagination;

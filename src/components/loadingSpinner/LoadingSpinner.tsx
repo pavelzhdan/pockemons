@@ -1,7 +1,7 @@
 import React from 'react';
 import './loadingSpinner.scss';
 
-const LoadingIndicator = function () {
+export const LoadingSpinner = (): React.ReactElement => {
   return (
     <div className="lds-ring">
       <div />
@@ -11,5 +11,3 @@ const LoadingIndicator = function () {
     </div>
   );
 };
-
-export default LoadingIndicator;
