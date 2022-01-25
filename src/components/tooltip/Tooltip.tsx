@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './tooltip.scss';
 
-interface ToolTipProps {
+type ToolTipProps = {
   direction?: string;
   delay?: number;
   children: React.ReactFragment;

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface initialStateProps {
+type initialStateProps = {
   currentUrl: string;
   currentPockemon: any;
   abilities: { name: string; description: string }[];

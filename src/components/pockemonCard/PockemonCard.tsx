@@ -6,7 +6,7 @@ import { toggleComparison } from '../../store/pockemonSlice';
 import { RootState } from '../../store/store';
 import './pockemonCard.scss';
 
-interface PockemonCardProps {
+type PockemonCardProps = {
   name: string;
   link: string;
 }

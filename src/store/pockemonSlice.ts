@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface initialStateProps {
+type initialStateProps = {
   items: { name: string; url: string }[];
   allItems: { name: string; url: string }[];
   itemsToShow: { name: string; url: string }[];
