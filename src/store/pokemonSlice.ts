@@ -7,7 +7,8 @@ type initialStateProps = {
   filteredItems: { name: string; url: string }[];
   searchFailed: boolean;
   comparisonItems: {
-    pockemonName: string;
+    id: string;
+    pokemonName: string;
     image: string;
     hp: number;
     attack: number;
@@ -99,7 +100,7 @@ export const paginationSlice = createSlice({
       state.items = action.payload.results;
       state.itemsToShow = [...state.items];
     },
-    addAllPockemons: (
+    addAllPokemons: (
       state: initialStateProps,
       action: PayloadAction<{ name: string; url: string }[]>,
     ) => {
@@ -132,7 +133,8 @@ export const paginationSlice = createSlice({
     addToShowComparison: (
       state: initialStateProps,
       action: PayloadAction<{
-        pockemonName: string;
+        id: string;
+        pokemonName: string;
         image: string;
         hp: number;
         attack: number;
@@ -173,7 +175,7 @@ export const {
   nextPage,
   setPageSize,
   prevPage,
-  addAllPockemons,
+  addAllPokemons,
   searchFailed,
   searchSuccess,
   showSearchResults,

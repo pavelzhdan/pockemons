@@ -3,15 +3,15 @@ import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import {
     addAbilitiesDescription,
-    addPockemon,
-} from '../store/pockeonPageSlice';
+    addPokemon,
+} from '../store/pokemonPageSlice';
 import { RootState } from '../store/store';
 import { Tooltip } from '../components/tooltip/Tooltip';
 import { LoadingSpinner } from '../components/loadingSpinner/LoadingSpinner';
 
-export const PockemonPage: React.FC = () => {
-    const { currentUrl, currentPockemon, abilities } = useAppSelector(
-        (state: RootState) => state.pockemonPage
+export const PokemonPage: React.FC = () => {
+    const { currentUrl, currentPokemon, abilities } = useAppSelector(
+        (state: RootState) => state.pokemonPage
     );
     const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -23,16 +23,16 @@ export const PockemonPage: React.FC = () => {
             fetch(currentUrl)
                 .then((response) => response.json())
                 .then((data) => {
-                    dispatch(addPockemon(data));
+                    dispatch(addPokemon(data));
                 })
                 .catch((error) => alert(error));
         }
     }, []);
 
     useEffect((): void => {
-        if (currentPockemon) {
+        if (currentPokemon) {
             const abilitiesToAdd: { name: string; description: string }[] = [];
-            currentPockemon.abilities.map(
+            currentPokemon.abilities.map(
                 (
                     item: { ability: { name: string; url: string } },
                     index: number
@@ -50,7 +50,7 @@ export const PockemonPage: React.FC = () => {
                             });
                             if (
                                 index ===
-                                currentPockemon.abilities.length - 1
+                                currentPokemon.abilities.length - 1
                             ) {
                                 dispatch(
                                     addAbilitiesDescription(abilitiesToAdd)
@@ -62,39 +62,39 @@ export const PockemonPage: React.FC = () => {
             );
             setIsLoading(false);
         }
-    }, [currentPockemon]);
+    }, [currentPokemon]);
 
     return (
       <>
             {!isLoading && (
-                <div className="wrapper pockemon-page">
-                    <h1 className="pockemon-page-header">
-                        {currentPockemon.name}
+                <div className="wrapper pokemon-page">
+                    <h1 className="pokemon-page-header">
+                        {currentPokemon.name}
                     </h1>
-                    <div className="pockemon-page-content">
+                    <div className="pokemon-page-content">
                         <img
-                            src={currentPockemon.sprites.front_default}
-                            alt="Pockemon"
+                            src={currentPokemon.sprites.front_default}
+                            alt="Pokemon"
                             width={200}
                             height={200}
                         />
-                        <div className="pockemon-page-info">
-                            <div className="pockemon-page-type-container">
-                                {currentPockemon.types.map(
+                        <div className="pokemon-page-info">
+                            <div className="pokemon-page-type-container">
+                                {currentPokemon.types.map(
                                     (slot: {
                                         type: { name: string; url: string };
                                     }) => (
                                         <div
                                             key={uuidv4()}
-                                            className="pockemon-page-types"
+                                            className="pokemon-page-types"
                                         >
                                             {slot.type.name}
                                         </div>
                                     )
                                 )}
                             </div>
-                            <dl className="pockemon-page-stats-list">
-                                {currentPockemon.stats.map(
+                            <dl className="pokemon-page-stats-list">
+                                {currentPokemon.stats.map(
                                     (item: {
                                         base_stat: number;
                                         effort: number;

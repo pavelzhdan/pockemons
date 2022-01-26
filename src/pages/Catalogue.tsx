@@ -2,8 +2,8 @@ import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { RootState } from '../store/store';
-import { addAllPockemons, paginationActions } from '../store/pockemonSlice';
-import { PockemonCard } from '../components/pockemonCard/PockemonCard';
+import { addAllPokemons, paginationActions } from '../store/pokemonSlice';
+import { PokemonCard } from '../components/pokemonCard/PokemonCard';
 import { LoadingSpinner } from '../components/loadingSpinner/LoadingSpinner';
 import { Pagination } from '../components/pagination/Pagination';
 import { NoResultsBanner } from '../components/noResultsBanner/NoResultsBanner';
@@ -36,7 +36,7 @@ export const Catalogue = (): React.ReactElement => {
       )
         .then((response) => response.json())
         .then((data) => {
-          dispatch(addAllPockemons(data.results));
+          dispatch(addAllPokemons(data.results));
         })
         .catch((error) => alert(error));
     }
@@ -50,7 +50,7 @@ export const Catalogue = (): React.ReactElement => {
       ) : (
         <div className="wrapper cards-container">
           {itemsToShow.map((item: { name: string; url: string }) => (
-            <PockemonCard name={item.name} link={item.url} key={uuidv4()} />
+            <PokemonCard name={item.name} link={item.url} key={uuidv4()} />
           ))}
         </div>
       )}

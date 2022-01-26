@@ -10,7 +10,7 @@ import {
   deleteShowComparison,
   searchFailed,
   searchSuccess,
-} from '../../store/pockemonSlice';
+} from '../../store/pokemonSlice';
 import './header.scss';
 
 export const Header = (): React.ReactElement => {
@@ -25,8 +25,8 @@ export const Header = (): React.ReactElement => {
   const { allItems, addedToComparison } = useAppSelector(
     (state: RootState) => state.pagination,
   );
-  const { currentPockemon } = useAppSelector(
-    (state: RootState) => state.pockemonPage,
+  const { currentPokemon } = useAppSelector(
+    (state: RootState) => state.pokemonPage,
   );
 
   const dispatch = useAppDispatch();
@@ -53,25 +53,25 @@ export const Header = (): React.ReactElement => {
   return (
     <header>
       <div className="wrapper">
-        <img src={logo} alt="Pockemon" width={150} />
+        <img src={logo} alt="Pokemon" width={150} />
         {location.pathname === '/' && (
           <input
             value={searchValue}
             onChange={(ev: React.ChangeEvent<HTMLInputElement>) => setSearchValue(ev.target.value)}
-            placeholder="find your Pockemon!"
+            placeholder="find your Pokemon!"
           />
         )}
         <Link
           to={`/${pathname}`}
           className={`comparison-button ${
             addedToComparison.length === 0
-            && location.pathname !== `/${currentPockemon?.name}`
+            && location.pathname !== `/${currentPokemon?.name}`
             && 'comparison-button-block'
           }`}
           onClick={(ev) => {
             if (
               addedToComparison.length === 0
-              && location.pathname !== `/${currentPockemon.name}`
+              && location.pathname !== `/${currentPokemon.name}`
             ) {
               ev.preventDefault();
             }

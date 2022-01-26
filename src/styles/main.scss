@@ -19,37 +19,37 @@ body {
 }
 
 
-.pockemon-page-header {
+.pokemon-page-header {
   text-transform: capitalize;
   text-align: center;
   margin-bottom: 12px;
 }
 
-.pockemon-page-content {
+.pokemon-page-content {
   display: flex;
   width: 400px;
   margin-left: auto;
   margin-right: auto;
 }
 
-.pockemon-page-info {
+.pokemon-page-info {
   width: 100%;
 }
 
-.pockemon-page-type-container {
+.pokemon-page-type-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
 }
 
-.pockemon-page-types {
+.pokemon-page-types {
   border-radius: 35%;
   background-color: coral;
   margin-right: 8px;
   padding: 4px 8px;
 }
 
-.pockemon-page-stats-list {
+.pokemon-page-stats-list {
   dt {
     float: left;
     width: 70%;
@@ -60,7 +60,7 @@ body {
   }
 }
 
-.pockemon-table {
+.pokemon-table {
   width: 100%;
   align-self: flex-start;
   table, th, td {

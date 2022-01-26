@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { nextPage, prevPage, setPageSize } from '../../store/pockemonSlice';
+import { nextPage, prevPage, setPageSize } from '../../store/pokemonSlice';
 import './pagination.scss';
 
 export const Pagination = (): React.ReactElement => {
@@ -68,7 +68,7 @@ export const Pagination = (): React.ReactElement => {
         <option value="100">100</option>
       </select>
       <span className="quantity">
-        Total pockemons quantity:
+        Total pokemons quantity:
         {totalQuantity}
       </span>
     </div>

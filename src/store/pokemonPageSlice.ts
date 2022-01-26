@@ -2,28 +2,28 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type InitialStateProps = {
   currentUrl: string;
-  currentPockemon: any;
+  currentPokemon: any;
   abilities: { name: string; description: string }[];
 }
 
 const initialState: InitialStateProps = {
   currentUrl: '',
-  currentPockemon: null,
+  currentPokemon: null,
   abilities: [],
 };
 
-export const pockemonPageSlice = createSlice({
-  name: 'pockemonPage',
+export const pokemonPageSlice = createSlice({
+  name: 'pokemonPage',
   initialState,
   reducers: {
-    addPockemonUrl: (
+    addPokemonUrl: (
       state: InitialStateProps,
       action: PayloadAction<string>,
     ) => {
       state.currentUrl = action.payload;
     },
-    addPockemon: (state: InitialStateProps, action: PayloadAction<any>) => {
-      state.currentPockemon = action.payload;
+    addPokemon: (state: InitialStateProps, action: PayloadAction<any>) => {
+      state.currentPokemon = action.payload;
     },
     addAbilitiesDescription: (
       state: InitialStateProps,
@@ -35,4 +35,4 @@ export const pockemonPageSlice = createSlice({
   },
 });
 
-export const { addPockemonUrl, addPockemon, addAbilitiesDescription } = pockemonPageSlice.actions;
+export const { addPokemonUrl, addPokemon, addAbilitiesDescription } = pokemonPageSlice.actions;
