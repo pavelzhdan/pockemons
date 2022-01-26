@@ -16,10 +16,10 @@ type initialStateProps = {
     specialAttack: number;
     specialDefence: number;
     speed: number;
-    height: number,
-    weight: number,
+    height: number;
+    weight: number;
     abilities: { ability: { name: string } }[];
-    url: string
+    url: string;
   }[];
   totalQuantity: number;
   itemsPerPage: string;
@@ -28,7 +28,7 @@ type initialStateProps = {
   previousUrl: string | null;
   isInitial: boolean;
   addedToComparison: { name: string; url: string }[];
-}
+};
 
 const initialState: initialStateProps = {
   items: [],
@@ -57,20 +57,19 @@ export const paginationSlice = createSlice({
         next: string | null;
         previous: string | null;
         results: { name: string; url: string }[];
-      }>,
+      }>
     ) {
-      if (state.isInitial) {
-        state.isInitial = false;
-
-        state.totalQuantity = action.payload.count;
-      }
-      state.nextUrl = action.payload.next;
-      state.previousUrl = action.payload.previous;
-      state.items = [...action.payload.results];
-      state.itemsToShow = [...action.payload.results];
+      return {
+        ...state,
+        itemsToShow: [...action.payload.results],
+        nextUrl: action.payload.next,
+        previousUrl: action.payload.previous,
+        items: [...action.payload.results],
+        totalQuantity: action.payload.count,
+      };
     },
     setPageSize: (state: initialStateProps, action: PayloadAction<string>) => {
-      state.itemsPerPage = action.payload;
+      return { ...state, itemsPerPage: action.payload };
     },
     nextPage: (
       state: initialStateProps,
@@ -79,12 +78,15 @@ export const paginationSlice = createSlice({
         next: string | null;
         previous: string | null;
         results: { name: string; url: string }[];
-      }>,
+      }>
     ) => {
-      state.previousUrl = action.payload.previous;
-      state.nextUrl = action.payload.next;
-      state.items = action.payload.results;
-      state.itemsToShow = action.payload.results;
+      return {
+        ...state,
+        previousUrl: action.payload.previous,
+        nextUrl: action.payload.next,
+        items: action.payload.results,
+        itemsToShow: action.payload.results,
+      };
     },
     prevPage: (
       state: initialStateProps,
@@ -93,42 +95,49 @@ export const paginationSlice = createSlice({
         next: string | null;
         previous: string | null;
         results: { name: string; url: string }[];
-      }>,
+      }>
     ) => {
-      state.previousUrl = action.payload.previous;
-      state.nextUrl = action.payload.next;
-      state.items = action.payload.results;
-      state.itemsToShow = [...state.items];
+      return {
+        ...state,
+        previousUrl: action.payload.previous,
+        nextUrl: action.payload.next,
+        items: action.payload.results,
+        itemsToShow: [...state.items],
+      };
     },
     addAllPokemons: (
       state: initialStateProps,
-      action: PayloadAction<{ name: string; url: string }[]>,
+      action: PayloadAction<{ name: string; url: string }[]>
     ) => {
-      state.allItems = action.payload;
+      return { ...state, allItems: action.payload };
     },
     showSearchResults: (
       state: initialStateProps,
-      action: PayloadAction<{ name: string; url: string }[] | []>,
+      action: PayloadAction<{ name: string; url: string }[] | []>
     ) => {
-      state.filteredItems = action.payload;
-      state.itemsToShow = [...state.filteredItems];
+      return {
+        ...state,
+        filteredItems: action.payload,
+        itemsToShow: [...state.filteredItems],
+      };
     },
     searchFailed: (state: initialStateProps) => {
-      state.searchFailed = true;
-      state.itemsToShow = [];
+      return { ...state, searchFailed: true, itemsToShow: [] };
     },
     searchSuccess: (state: initialStateProps) => {
-      state.searchFailed = false;
+      return { ...state, searchFailed: false };
     },
     searchEmpty: (state: initialStateProps) => {
-      state.filteredItems = [];
-      state.itemsToShow = [...state.items];
+      return { ...state, filteredItems: [], itemsToShow: [...state.items] };
     },
     addToComparison: (
       state: initialStateProps,
-      action: PayloadAction<{ name: string; url: string }>,
+      action: PayloadAction<{ name: string; url: string }>
     ) => {
-      state.addedToComparison.push(action.payload);
+      return {
+        ...state,
+        addedToComparison: [...state.addedToComparison, action.payload],
+      };
     },
     addToShowComparison: (
       state: initialStateProps,
@@ -142,31 +151,34 @@ export const paginationSlice = createSlice({
         specialAttack: number;
         specialDefence: number;
         speed: number;
-        height: number,
-        weight: number,
-        abilities: [],
-        url: string,
-      }>,
+        height: number;
+        weight: number;
+        abilities: [];
+        url: string;
+      }>
     ) => {
-      state.comparisonItems.push(action.payload);
+      return {
+        ...state,
+        comparisonItems: [...state.comparisonItems, action.payload],
+      };
     },
-    deleteShowComparison: (
-      state: initialStateProps,
-    ) => {
-      state.comparisonItems = [];
+    deleteShowComparison: (state: initialStateProps) => {
+      return { ...state, comparisonItems: [] };
     },
     toggleComparison(
       state: initialStateProps,
-      action: PayloadAction<{ name: string; url: string }>,
+      action: PayloadAction<{ name: string; url: string }>
     ) {
       const newArray = state.addedToComparison.filter(
-        (item) => item.name !== action.payload.name,
+        (item) => item.name !== action.payload.name
       );
       if (newArray.length === state.addedToComparison.length) {
-        state.addedToComparison.push(action.payload);
-      } else {
-        state.addedToComparison = newArray;
+        return {
+          ...state,
+          addedToComparison: [...state.addedToComparison, action.payload],
+        };
       }
+      return { ...state, addedToComparison: newArray };
     },
   },
 });

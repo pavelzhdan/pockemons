@@ -1,12 +1,14 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store';
 import { RootState } from '../store/store';
 import { addAllPokemons, paginationActions } from '../store/pokemonSlice';
-import { PokemonCard } from '../components/pokemonCard/PokemonCard';
-import { LoadingSpinner } from '../components/loadingSpinner/LoadingSpinner';
-import { Pagination } from '../components/pagination/Pagination';
-import { NoResultsBanner } from '../components/noResultsBanner/NoResultsBanner';
+import {
+  PokemonCard,
+  LoadingSpinner,
+  Pagination,
+  NoResultsBanner,
+} from '../components';
 
 export const Catalogue = (): React.ReactElement => {
   const dispatch = useAppDispatch();

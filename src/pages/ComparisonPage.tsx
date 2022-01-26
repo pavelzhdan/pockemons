@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store';
 import { RootState } from '../store/store';
 import { addToShowComparison } from '../store/pokemonSlice';
-import { LoadingSpinner } from '../components/loadingSpinner/LoadingSpinner';
-import { ComparisonTable } from '../components/comparisonTable/ComparisonTable';
-import { ComparisonTableRow } from '../components/comparisonTableRow/ComparisonTableRow';
+import {
+  LoadingSpinner,
+  ComparisonTable,
+  ComparisonTableRow,
+} from '../components';
 
 export const ComparisonPage = (): React.ReactElement => {
   const { comparisonItems, addedToComparison } = useAppSelector(

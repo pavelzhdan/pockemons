@@ -1,11 +1,5 @@
 {
   "trailingComma": "es5",
-  "singleQuote": true,
-  "prettier/prettier": [
-    "error",
-    {
-      "endOfLine": "auto"
-    }
-  ]
+  "singleQuote": true
 }
 
