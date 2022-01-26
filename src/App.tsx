@@ -7,7 +7,7 @@ export const App = (): React.ReactElement => (
   <Router>
     <MainLayout>
       <Routes>
-        <Route path="/" element={<Catalogue />} />
+        <Route path="/  " element={<Catalogue />} />
         <Route path="/:name" element={<PokemonPage />} />
         <Route path="comparison" element={<ComparisonPage />} />
       </Routes>
