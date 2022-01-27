@@ -1,22 +1,33 @@
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { nextPage, prevPage, setPageSize } from '../../store/pokemonSlice';
+import { useAppDispatch, useAppSelector } from '../../store';
 import './pagination.scss';
+import { paginationActions } from '../../store/paginationSlice';
 
-export const Pagination = (): React.ReactElement => {
+/**
+ * Компонент "Пагинация"
+ * @returns {React.ReactElement} - react-элемент
+ */
+
+export const Pagination: React.FC = () => {
   const dispatch = useAppDispatch();
-  const {
-    previousUrl, nextUrl, itemsPerPage, totalQuantity,
-  } = useAppSelector(
-    (state) => state.pagination,
+  const { previousUrl, nextUrl, itemsPerPage, totalQuantity } = useAppSelector(
+    (state) => state.pagination
   );
 
+  /**
+   * Меняет количество выводимых покемонов для запроса по API
+   * @returns {void}
+   */
   const handlerPageSizeChange = (
-    ev: React.ChangeEvent<HTMLSelectElement>,
+    ev: React.ChangeEvent<HTMLSelectElement>
   ): void => {
-    dispatch(setPageSize(ev.target.value));
+    dispatch(paginationActions.setPageSize(ev.target.value));
   };
 
+  /**
+   * Запрашивает покемонов для отображения на следующей страницы по API
+   * @returns {void}
+   */
   const handlerNextPage = (): void => {
     if (nextUrl) {
       fetch(nextUrl)
@@ -28,13 +39,17 @@ export const Pagination = (): React.ReactElement => {
             previous: string | null;
             results: { name: string; url: string }[];
           }) => {
-            dispatch(nextPage(response));
-          },
+            dispatch(paginationActions.goToNextPage(response));
+          }
         )
         .catch((error) => alert(error));
     }
   };
 
+  /**
+   * Запрашивает покемонов для отображения на предыдущей страницы по API
+   * @returns {void}
+   */
   const handlerPrevPage = (): void => {
     if (previousUrl) {
       fetch(previousUrl)
@@ -46,8 +61,8 @@ export const Pagination = (): React.ReactElement => {
             previous: string | null;
             results: { name: string; url: string }[];
           }) => {
-            dispatch(prevPage(response));
-          },
+            dispatch(paginationActions.goToPrevPage(response));
+          }
         )
         .catch((error) => alert(error));
     }

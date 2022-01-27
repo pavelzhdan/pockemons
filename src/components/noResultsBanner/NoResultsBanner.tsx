@@ -1,10 +1,11 @@
 import React from 'react';
 import './noResultsBanner.scss';
 
-export const NoResultsBanner = (): React.ReactElement => {
-  return (
-    <div className="banner">
-      Oooops... nothing was found! Try something else!
-    </div>
-  );
-};
+/**
+ * Компонент "Баннер отсутствия результатов поиска"
+ * @returns {React.ReactElement} - react-элемент
+ */
+
+export const NoResultsBanner: React.FC = () => (
+  <div className="banner">Oooops... nothing was found! Try something else!</div>
+);

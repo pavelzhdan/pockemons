@@ -1,9 +1,13 @@
 import React, { useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch, useAppSelector } from '../store';
-import { addAbilitiesDescription, addPokemon } from '../store/pokemonPageSlice';
 import { RootState } from '../store/store';
 import { Tooltip, LoadingSpinner } from '../components';
+import { pokemonPageActions } from '../store/pokemonPageSlice';
+
+/**
+ * Компонент "Страница покемона"
+ * @returns {React.ReactElement} - react-элемент
+ */
 
 export const PokemonPage: React.FC = () => {
   const { currentUrl, currentPokemon, abilities } = useAppSelector(
@@ -11,15 +15,25 @@ export const PokemonPage: React.FC = () => {
   );
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [isLoadingAbilities, setIsLoadingAbilities] =
-    React.useState<boolean>(true);
+
+  const filterPocemonData = (data: any) => {
+    return {
+      id: data.id,
+      name: data.name,
+      image: data.sprites.front_default,
+      types: data.types,
+      stats: data.stats,
+      abilities: data.abilities,
+    };
+  };
 
   useEffect(() => {
     if (currentUrl) {
       fetch(currentUrl)
         .then((response) => response.json())
         .then((data) => {
-          dispatch(addPokemon(data));
+          const infoToAdd = filterPocemonData(data);
+          dispatch(pokemonPageActions.addPokemon(infoToAdd));
         })
         .catch((error) => alert(error));
     }
@@ -42,8 +56,9 @@ export const PokemonPage: React.FC = () => {
                 description: filteredData.effect,
               });
               if (index === currentPokemon.abilities.length - 1) {
-                dispatch(addAbilitiesDescription(abilitiesToAdd));
-                setIsLoadingAbilities(false);
+                dispatch(
+                  pokemonPageActions.addAbilitiesDescription(abilitiesToAdd)
+                );
               }
             })
             .catch((error) => alert(error))
@@ -52,61 +67,57 @@ export const PokemonPage: React.FC = () => {
     }
   }, [currentPokemon]);
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <>
-      {!isLoading && (
-        <div className="wrapper pokemon-page">
-          <h1 className="pokemon-page-header">{currentPokemon.name}</h1>
-          <div className="pokemon-page-content">
-            <img
-              src={currentPokemon.sprites.front_default}
-              alt="Pokemon"
-              width={200}
-              height={200}
-            />
-            <div className="pokemon-page-info">
-              <div className="pokemon-page-type-container">
-                {currentPokemon.types.map(
-                  (slot: { type: { name: string; url: string } }) => (
-                    <div key={uuidv4()} className="pokemon-page-types">
-                      {slot.type.name}
-                    </div>
-                  )
-                )}
-              </div>
-              <dl className="pokemon-page-stats-list">
-                {currentPokemon.stats.map(
-                  (item: {
-                    ['base_stat']: number;
-                    effort: number;
-                    stat: { name: string; url: string };
-                  }) => (
-                    <React.Fragment key={uuidv4()}>
-                      <dt>{item.stat.name}</dt>
-                      <dd>{item.base_stat}</dd>
-                    </React.Fragment>
-                  )
-                )}
-              </dl>
-              {!isLoadingAbilities && (
-                <ul>
-                  {abilities.map(
-                    (item: { name: string; description: string }) => (
-                      <li key={uuidv4()}>
-                        <Tooltip content={item.description} key={uuidv4()}>
-                          <span>{item.name}</span>
-                        </Tooltip>
-                      </li>
-                    )
-                  )}
-                </ul>
-              )}
-              {isLoadingAbilities && <LoadingSpinner />}
-            </div>
+    <div className="wrapper pokemon-page">
+      <h1 className="pokemon-page-header">{currentPokemon.name}</h1>
+      <div className="pokemon-page-content">
+        <img
+          src={currentPokemon.image}
+          alt="Pokemon"
+          width={200}
+          height={200}
+        />
+        <div className="pokemon-page-info">
+          <div className="pokemon-page-type-container">
+            {currentPokemon.types.map(
+              (slot: { type: { name: string; url: string } }) => (
+                <div
+                  key={currentPokemon.id + slot.type.name}
+                  className="pokemon-page-types"
+                >
+                  {slot.type.name}
+                </div>
+              )
+            )}
           </div>
+          <dl className="pokemon-page-stats-list">
+            {currentPokemon.stats.map(
+              (item: {
+                ['base_stat']: number;
+                stat: { name: string; url: string };
+              }) => (
+                <React.Fragment key={currentPokemon.id + item.stat.name}>
+                  <dt>{item.stat.name}</dt>
+                  <dd>{item.base_stat}</dd>
+                </React.Fragment>
+              )
+            )}
+          </dl>
+          <ul>
+            {abilities.map((item: { name: string; description: string }) => (
+              <li key={currentPokemon.id + item.name}>
+                <Tooltip content={item.description}>
+                  <span>{item.name}</span>
+                </Tooltip>
+              </li>
+            ))}
+          </ul>
         </div>
-      )}
-      {isLoading && <LoadingSpinner />}
-    </>
+      </div>
+    </div>
   );
 };

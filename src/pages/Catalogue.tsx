@@ -1,14 +1,18 @@
 import React from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch, useAppSelector } from '../store';
 import { RootState } from '../store/store';
-import { addAllPokemons, paginationActions } from '../store/pokemonSlice';
+import { paginationActions } from '../store/paginationSlice';
 import {
   PokemonCard,
   LoadingSpinner,
   Pagination,
   NoResultsBanner,
 } from '../components';
+
+/**
+ * Компонент "Каталог покемонов"
+ * @returns {React.ReactElement} - react-элемент
+ */
 
 export const Catalogue = (): React.ReactElement => {
   const dispatch = useAppDispatch();
@@ -26,7 +30,7 @@ export const Catalogue = (): React.ReactElement => {
     )
       .then((data) => data.json())
       .then((response) => {
-        dispatch(paginationActions.fetchData(response));
+        dispatch(paginationActions.getFirstData(response));
       })
       .catch((error) => alert(error));
   }, [itemsOffset, itemsPerPage]);
@@ -38,25 +42,28 @@ export const Catalogue = (): React.ReactElement => {
       )
         .then((response) => response.json())
         .then((data) => {
-          dispatch(addAllPokemons(data.results));
+          dispatch(paginationActions.addAllPokemons(data.results));
         })
         .catch((error) => alert(error));
     }
   }, [totalQuantity]);
 
+  if (itemsToShow.length === 0 && !searchFailed) {
+    return <LoadingSpinner />;
+  }
+
+  if (searchFailed) {
+    return <NoResultsBanner />;
+  }
+
   return (
     <>
-      {itemsToShow.length === 0 && !searchFailed && <LoadingSpinner />}
-      {searchFailed ? (
-        <NoResultsBanner />
-      ) : (
-        <div className="wrapper cards-container">
-          {itemsToShow.map((item: { name: string; url: string }) => (
-            <PokemonCard name={item.name} link={item.url} key={uuidv4()} />
-          ))}
-        </div>
-      )}
-      {itemsToShow.length !== 0 && !searchFailed && <Pagination />}
+      <div className="wrapper cards-container">
+        {itemsToShow.map((item: { name: string; url: string }) => (
+          <PokemonCard name={item.name} link={item.url} key={item.name} />
+        ))}
+      </div>
+      <Pagination />
     </>
   );
 };

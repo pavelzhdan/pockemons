@@ -2,13 +2,14 @@ import React from 'react';
 import { Header } from '../header/Header';
 import './MainLayout.scss';
 
-export const MainLayout: React.FC = (props) => {
-  const { children } = props;
+/**
+ * Компонент "Общий макет страницы"
+ * @returns {React.ReactElement} - react-элемент
+ */
 
-  return (
-    <>
-      <Header />
-      <main className="page-content">{children}</main>
-    </>
-  );
-};
+export const MainLayout: React.FC = ({ children }) => (
+  <>
+    <Header />
+    <main className="page-content">{children}</main>
+  </>
+);

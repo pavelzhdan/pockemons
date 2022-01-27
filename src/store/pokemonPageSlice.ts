@@ -1,14 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ItemDescription, PokemonPageState } from '../types';
 
-type InitialStateProps = {
-  currentUrl: string;
-  currentPokemon: any;
-  abilities: { name: string; description: string }[];
-};
-
-const initialState: InitialStateProps = {
+const initialState: PokemonPageState = {
   currentUrl: '',
-  currentPokemon: null,
+  currentPokemon: {
+    id: 0,
+    name: '',
+    image: '',
+    types: [{ type: { name: '', url: '' } }],
+    stats: [{ base_stat: 0, stat: { name: '', url: '' } }],
+    abilities: [{ ability: { name: '', url: '' } }],
+  },
   abilities: [],
 };
 
@@ -16,23 +18,19 @@ export const pokemonPageSlice = createSlice({
   name: 'pokemonPage',
   initialState,
   reducers: {
-    addPokemonUrl: (
-      state: InitialStateProps,
-      action: PayloadAction<string>
-    ) => {
+    addPokemonUrl: (state: PokemonPageState, action: PayloadAction<string>) => {
       return { ...state, currentUrl: action.payload };
     },
-    addPokemon: (state: InitialStateProps, action: PayloadAction<any>) => {
+    addPokemon: (state: PokemonPageState, action: PayloadAction<any>) => {
       return { ...state, currentPokemon: action.payload };
     },
     addAbilitiesDescription: (
-      state: InitialStateProps,
-      action: PayloadAction<{ name: string; description: string }[]>
+      state: PokemonPageState,
+      action: PayloadAction<ItemDescription[]>
     ) => {
       return { ...state, abilities: [...action.payload] };
     },
   },
 });
 
-export const { addPokemonUrl, addPokemon, addAbilitiesDescription } =
-  pokemonPageSlice.actions;
+export const pokemonPageActions = pokemonPageSlice.actions;

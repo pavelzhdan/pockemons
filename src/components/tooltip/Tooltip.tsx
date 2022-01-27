@@ -6,12 +6,20 @@ type ToolTipProps = {
   delay?: number;
   children: React.ReactFragment;
   content: string;
-}
+};
+
+/**
+ * Компонент "Тултип"
+ * @returns {React.ReactElement} - react-элемент
+ */
 
 export const Tooltip: React.FC<ToolTipProps> = ({
-  children, direction = 'top', delay = 400, content,
+  children,
+  direction,
+  delay,
+  content,
 }: ToolTipProps): React.ReactElement => {
-  let timeout: NodeJS.Timeout;
+  let timeout: any;
   const [active, setActive] = useState(false);
 
   const showTip = () => {
@@ -42,4 +50,9 @@ export const Tooltip: React.FC<ToolTipProps> = ({
       )}
     </div>
   );
+};
+
+Tooltip.defaultProps = {
+  direction: 'top',
+  delay: 400,
 };

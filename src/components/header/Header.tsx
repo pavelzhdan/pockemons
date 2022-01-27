@@ -1,19 +1,17 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../../assets/International_Pokémon_logo.png';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-
+import { useAppDispatch, useAppSelector } from '../../store';
 import { RootState } from '../../store/store';
-import {
-  showSearchResults,
-  searchEmpty,
-  deleteShowComparison,
-  searchFailed,
-  searchSuccess,
-} from '../../store/pokemonSlice';
 import './header.scss';
+import { paginationActions } from '../../store/paginationSlice';
 
-export const Header = (): React.ReactElement => {
+/**
+ * Компонент "Шапка"
+ * @returns {React.ReactElement} - react-элемент
+ */
+
+export const Header: React.FC = () => {
   const location = useLocation();
   let pathname = '';
 
@@ -23,10 +21,10 @@ export const Header = (): React.ReactElement => {
 
   const [searchValue, setSearchValue] = React.useState<string>('');
   const { allItems, addedToComparison } = useAppSelector(
-    (state: RootState) => state.pagination,
+    (state: RootState) => state.pagination
   );
   const { currentPokemon } = useAppSelector(
-    (state: RootState) => state.pokemonPage,
+    (state: RootState) => state.pokemonPage
   );
 
   const dispatch = useAppDispatch();
@@ -34,21 +32,32 @@ export const Header = (): React.ReactElement => {
   React.useEffect(() => {
     const searchTimer = setTimeout(() => {
       if (searchValue.length !== 0) {
-        const selected = allItems.filter((item) => item.name.includes(searchValue));
+        const selected = allItems.filter((item) =>
+          item.name.includes(searchValue)
+        );
         if (selected.length === 0) {
-          dispatch(searchFailed());
+          dispatch(paginationActions.setSearchFailed());
         } else {
-          dispatch(searchSuccess());
-          dispatch(showSearchResults(selected));
+          dispatch(paginationActions.setSearchSuccess());
+          dispatch(paginationActions.showSearchResults(selected));
         }
       }
 
       if (searchValue === '') {
-        dispatch(searchEmpty());
+        dispatch(paginationActions.setSearchEmpty());
       }
     }, 150);
     return () => clearTimeout(searchTimer);
   }, [searchValue]);
+
+  let isButtonBlocked = '';
+
+  if (
+    addedToComparison.length === 0 &&
+    location.pathname !== `/${currentPokemon?.name}`
+  ) {
+    isButtonBlocked = 'comparison-button-block';
+  }
 
   return (
     <header>
@@ -57,30 +66,26 @@ export const Header = (): React.ReactElement => {
         {location.pathname === '/' && (
           <input
             value={searchValue}
-            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => setSearchValue(ev.target.value)}
+            onChange={(ev: React.ChangeEvent<HTMLInputElement>) =>
+              setSearchValue(ev.target.value)
+            }
             placeholder="find your Pokemon!"
           />
         )}
         <Link
           to={`/${pathname}`}
-          className={`comparison-button ${
-            addedToComparison.length === 0
-            && location.pathname !== `/${currentPokemon?.name}`
-            && 'comparison-button-block'
-          }`}
+          className={`comparison-button ${isButtonBlocked}`}
           onClick={(ev) => {
             if (
-              addedToComparison.length === 0
-              && location.pathname !== `/${currentPokemon.name}`
+              addedToComparison.length === 0 &&
+              location.pathname !== `/${currentPokemon.name}`
             ) {
               ev.preventDefault();
             }
-            dispatch(deleteShowComparison());
+            dispatch(paginationActions.deleteShowComparison());
           }}
         >
-          Go to
-          {' '}
-          {pathname ? 'comparison' : 'catalog'}
+          Go to {pathname ? 'comparison' : 'catalog'}
         </Link>
       </div>
     </header>

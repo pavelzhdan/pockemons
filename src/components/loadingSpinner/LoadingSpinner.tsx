@@ -1,7 +1,12 @@
 import React from 'react';
 import './loadingSpinner.scss';
 
-export const LoadingSpinner = (): React.ReactElement => {
+/**
+ * Компонент "Спиннер"
+ * @returns {React.ReactElement} - react-элемент
+ */
+
+export const LoadingSpinner: React.FC = () => {
   return (
     <div className="lds-ring">
       <div />

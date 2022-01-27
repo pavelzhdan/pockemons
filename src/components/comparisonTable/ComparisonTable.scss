@@ -1,0 +1,10 @@
+.pokemon-table {
+  width: 100%;
+  align-self: flex-start;
+  table, th, td {
+    border-collapse: collapse;
+    border: 1px solid black;
+    vertical-align: middle;
+    text-align: center;
+  }
+}

@@ -1,31 +1,44 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
-import {
-  deleteShowComparison,
-  toggleComparison,
-} from '../../store/pokemonSlice';
-import { addPokemonUrl } from '../../store/pokemonPageSlice';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch } from '../../store';
+import { paginationActions } from '../../store/paginationSlice';
+import { pokemonPageActions } from '../../store/pokemonPageSlice';
 
-type ComparisonTableRow = {
+type ComparisonTableRowProps = {
   comparisonItem: any;
 };
 
-export const ComparisonTableRow = (props: ComparisonTableRow) => {
-  const { comparisonItem } = props;
+/**
+ * Компонент "Строка таблицы сравнения"
+ * @returns {React.ReactElement} - react-элемент
+ */
+
+export const ComparisonTableRow: React.FC<ComparisonTableRowProps> = ({
+  comparisonItem,
+}) => {
   const dispatch = useAppDispatch();
 
+  /**
+   * Меняет текст URL для запроса характеристик покемона по API
+   * @param {string} link - ссылка на покемона по API
+   * @returns {void}
+   */
   const handlerPokemonLinkClick = (link: string) =>
-    dispatch(addPokemonUrl(link));
+    dispatch(pokemonPageActions.addPokemonUrl(link));
 
-  const handlerComparisonToggle = (name: string, link: string) => {
-    dispatch(deleteShowComparison());
-    dispatch(toggleComparison({ name, url: link }));
+  /**
+   * Удаляет покемона из списка сравнения и из стейта
+   * @param {string} name - имя покемона
+   * @param {string} link - ссылка на покемона для API
+   * @returns {void}
+   */
+  const handlerComparisonToggle = (name: string, link: string): void => {
+    dispatch(paginationActions.deleteShowComparison());
+    dispatch(paginationActions.toggleComparison({ name, url: link }));
   };
 
   return (
-    <tr key={comparisonItem.id}>
+    <tr>
       <td>
         <Link
           to={`/${comparisonItem.pokemonName}`}
@@ -52,7 +65,9 @@ export const ComparisonTableRow = (props: ComparisonTableRow) => {
               name: string;
             };
           }) => (
-            <div key={uuidv4()}>{abilityItem.ability.name}</div>
+            <div key={comparisonItem.id + abilityItem.ability.name}>
+              {abilityItem.ability.name}
+            </div>
           )
         )}
       </td>
