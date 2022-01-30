@@ -59,7 +59,7 @@ export const Catalogue = (): React.ReactElement => {
   return (
     <>
       <div className="wrapper cards-container">
-        {itemsToShow.map((item: { name: string; url: string }) => (
+        {itemsToShow.map((item) => (
           <PokemonCard name={item.name} link={item.url} key={item.name} />
         ))}
       </div>

@@ -3,7 +3,6 @@ import './tooltip.scss';
 
 type ToolTipProps = {
   direction?: string;
-  delay?: number;
   children: React.ReactFragment;
   content: string;
 };
@@ -16,20 +15,15 @@ type ToolTipProps = {
 export const Tooltip: React.FC<ToolTipProps> = ({
   children,
   direction,
-  delay,
   content,
 }: ToolTipProps): React.ReactElement => {
-  let timeout: any;
   const [active, setActive] = useState(false);
 
   const showTip = () => {
-    timeout = setTimeout(() => {
-      setActive(true);
-    }, delay);
+    setActive(true);
   };
 
   const hideTip = () => {
-    clearInterval(timeout);
     setActive(false);
   };
 
@@ -54,5 +48,4 @@ export const Tooltip: React.FC<ToolTipProps> = ({
 
 Tooltip.defaultProps = {
   direction: 'top',
-  delay: 400,
 };

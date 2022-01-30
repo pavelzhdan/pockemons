@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../store';
 import { RootState } from '../store/store';
 import { Tooltip, LoadingSpinner } from '../components';
 import { pokemonPageActions } from '../store/pokemonPageSlice';
+import { ItemDescription, PokemonIndividualPageObject } from '../types';
 
 /**
  * Компонент "Страница покемона"
@@ -16,7 +17,7 @@ export const PokemonPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
-  const filterPocemonData = (data: any) => {
+  const filterPocemonData = (data: any): PokemonIndividualPageObject => {
     return {
       id: data.id,
       name: data.name,
@@ -41,27 +42,26 @@ export const PokemonPage: React.FC = () => {
 
   useEffect((): void => {
     if (currentPokemon) {
-      const abilitiesToAdd: { name: string; description: string }[] = [];
-      currentPokemon.abilities.map(
-        (item: { ability: { name: string; url: string } }, index: number) =>
-          fetch(item.ability.url)
-            .then((response) => response.json())
-            .then((data) => {
-              const [filteredData] = data.effect_entries.filter(
-                (position: { language: { name: string } }) =>
-                  position.language.name === 'en'
+      const abilitiesToAdd: ItemDescription[] = [];
+      currentPokemon.abilities.map((item, index: number) =>
+        fetch(item.ability.url)
+          .then((response) => response.json())
+          .then((data) => {
+            const [filteredData] = data.effect_entries.filter(
+              (position: { language: { name: string } }) =>
+                position.language.name === 'en'
+            );
+            abilitiesToAdd.push({
+              name: data.name,
+              description: filteredData.effect,
+            });
+            if (index === currentPokemon.abilities.length - 1) {
+              dispatch(
+                pokemonPageActions.addAbilitiesDescription(abilitiesToAdd)
               );
-              abilitiesToAdd.push({
-                name: data.name,
-                description: filteredData.effect,
-              });
-              if (index === currentPokemon.abilities.length - 1) {
-                dispatch(
-                  pokemonPageActions.addAbilitiesDescription(abilitiesToAdd)
-                );
-              }
-            })
-            .catch((error) => alert(error))
+            }
+          })
+          .catch((error) => alert(error))
       );
       setIsLoading(false);
     }
@@ -83,32 +83,25 @@ export const PokemonPage: React.FC = () => {
         />
         <div className="pokemon-page-info">
           <div className="pokemon-page-type-container">
-            {currentPokemon.types.map(
-              (slot: { type: { name: string; url: string } }) => (
-                <div
-                  key={currentPokemon.id + slot.type.name}
-                  className="pokemon-page-types"
-                >
-                  {slot.type.name}
-                </div>
-              )
-            )}
+            {currentPokemon.types.map((slot) => (
+              <div
+                key={currentPokemon.id + slot.type.name}
+                className="pokemon-page-types"
+              >
+                {slot.type.name}
+              </div>
+            ))}
           </div>
           <dl className="pokemon-page-stats-list">
-            {currentPokemon.stats.map(
-              (item: {
-                ['base_stat']: number;
-                stat: { name: string; url: string };
-              }) => (
-                <React.Fragment key={currentPokemon.id + item.stat.name}>
-                  <dt>{item.stat.name}</dt>
-                  <dd>{item.base_stat}</dd>
-                </React.Fragment>
-              )
-            )}
+            {currentPokemon.stats.map((item) => (
+              <React.Fragment key={currentPokemon.id + item.stat.name}>
+                <dt>{item.stat.name}</dt>
+                <dd>{item.base_stat}</dd>
+              </React.Fragment>
+            ))}
           </dl>
           <ul>
-            {abilities.map((item: { name: string; description: string }) => (
+            {abilities.map((item) => (
               <li key={currentPokemon.id + item.name}>
                 <Tooltip content={item.description}>
                   <span>{item.name}</span>

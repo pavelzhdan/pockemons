@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../store';
 import { paginationActions } from '../../store/paginationSlice';
 import { pokemonPageActions } from '../../store/pokemonPageSlice';
+import { PokemonComparisonObject } from '../../types';
 
 type ComparisonTableRowProps = {
-  comparisonItem: any;
+  comparisonItem: PokemonComparisonObject;
 };
 
 /**
@@ -23,8 +24,9 @@ export const ComparisonTableRow: React.FC<ComparisonTableRowProps> = ({
    * @param {string} link - ссылка на покемона по API
    * @returns {void}
    */
-  const handlerPokemonLinkClick = (link: string) =>
+  const handlerPokemonLinkClick = (link: string): void => {
     dispatch(pokemonPageActions.addPokemonUrl(link));
+  };
 
   /**
    * Удаляет покемона из списка сравнения и из стейта
@@ -59,17 +61,11 @@ export const ComparisonTableRow: React.FC<ComparisonTableRowProps> = ({
       <td>{comparisonItem.height}</td>
       <td>{comparisonItem.weight}</td>
       <td>
-        {comparisonItem.abilities.map(
-          (abilityItem: {
-            ability: {
-              name: string;
-            };
-          }) => (
-            <div key={comparisonItem.id + abilityItem.ability.name}>
-              {abilityItem.ability.name}
-            </div>
-          )
-        )}
+        {comparisonItem.abilities.map((abilityItem) => (
+          <div key={comparisonItem.id + abilityItem.ability.name}>
+            {abilityItem.ability.name}
+          </div>
+        ))}
       </td>
       <td>
         <button

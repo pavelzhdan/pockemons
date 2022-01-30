@@ -35,8 +35,9 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
    * @param {string} link  - имя покемона и ссылка на него по API
    * @returns {void}
    */
-  const handlerPokemonCardClick = (link: string) =>
+  const handlerPokemonCardClick = (link: string): void => {
     dispatch(pokemonPageActions.addPokemonUrl(link));
+  };
 
   /**
    * Удаляет покемона из списка сравнения
@@ -44,7 +45,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
    * @param {string} url - ссылка на покемона для API
    * @returns {void}
    */
-  const handlerComparisonToggle = (name: string, url: string) => {
+  const handlerComparisonToggle = (name: string, url: string): void => {
     dispatch(paginationActions.toggleComparison({ name, url }));
   };
 

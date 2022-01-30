@@ -8,6 +8,7 @@ import {
   ComparisonTableRow,
 } from '../components';
 import { paginationActions } from '../store/paginationSlice';
+import { PokemonData } from '../types';
 
 /**
  * Компонент "Страница сравнения"
@@ -22,7 +23,7 @@ export const ComparisonPage = (): React.ReactElement => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const filterNeededData = (data: any, url: string) => {
+  const filterNeededData = (data: any, url: string): PokemonData => {
     return {
       id: data.id,
       pokemonName: data.name,

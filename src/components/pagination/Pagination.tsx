@@ -2,6 +2,7 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../store';
 import './pagination.scss';
 import { paginationActions } from '../../store/paginationSlice';
+import { InitialData } from '../../types';
 
 /**
  * Компонент "Пагинация"
@@ -32,16 +33,9 @@ export const Pagination: React.FC = () => {
     if (nextUrl) {
       fetch(nextUrl)
         .then((data) => data.json())
-        .then(
-          (response: {
-            count: number;
-            next: string | null;
-            previous: string | null;
-            results: { name: string; url: string }[];
-          }) => {
-            dispatch(paginationActions.goToNextPage(response));
-          }
-        )
+        .then((response: InitialData) => {
+          dispatch(paginationActions.goToNextPage(response));
+        })
         .catch((error) => alert(error));
     }
   };
@@ -54,16 +48,9 @@ export const Pagination: React.FC = () => {
     if (previousUrl) {
       fetch(previousUrl)
         .then((data) => data.json())
-        .then(
-          (response: {
-            count: number;
-            next: string | null;
-            previous: string | null;
-            results: { name: string; url: string }[];
-          }) => {
-            dispatch(paginationActions.goToPrevPage(response));
-          }
-        )
+        .then((response: InitialData) => {
+          dispatch(paginationActions.goToPrevPage(response));
+        })
         .catch((error) => alert(error));
     }
   };

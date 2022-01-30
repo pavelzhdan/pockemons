@@ -18,18 +18,18 @@ export const pokemonPageSlice = createSlice({
   name: 'pokemonPage',
   initialState,
   reducers: {
-    addPokemonUrl: (state: PokemonPageState, action: PayloadAction<string>) => {
-      return { ...state, currentUrl: action.payload };
-    },
-    addPokemon: (state: PokemonPageState, action: PayloadAction<any>) => {
-      return { ...state, currentPokemon: action.payload };
-    },
+    addPokemonUrl: (
+      state: PokemonPageState,
+      action: PayloadAction<string>
+    ) => ({ ...state, currentUrl: action.payload }),
+    addPokemon: (state: PokemonPageState, action: PayloadAction<any>) => ({
+      ...state,
+      currentPokemon: action.payload,
+    }),
     addAbilitiesDescription: (
       state: PokemonPageState,
       action: PayloadAction<ItemDescription[]>
-    ) => {
-      return { ...state, abilities: [...action.payload] };
-    },
+    ) => ({ ...state, abilities: [...action.payload] }),
   },
 });
 

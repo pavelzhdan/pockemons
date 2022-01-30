@@ -1,21 +1,60 @@
 /**
- * Стейт страницы покемона
+ * Объект с информацией о покемоне для сравнения
+ */
+
+export type PokemonComparisonObject = {
+  /** Уникальный номер * */
+  id: number;
+  /** Имя покемона * */
+  pokemonName: string;
+  /** Изображение покемона * */
+  image: string;
+  /** Показатель здоровья * */
+  hp: number;
+  /** Показатель урона * */
+  attack: number;
+  /** Показатель защиты * */
+  defence: number;
+  /** Показатель специальной атаки * */
+  specialAttack: number;
+  /** Показатель специальной защиты * */
+  specialDefence: number;
+  /** Показатель скорости * */
+  speed: number;
+  /** Рост покемона * */
+  height: number;
+  /** Вес покемона * */
+  weight: number;
+  /** Способности покемона * */
+  abilities: { ability: { name: string } }[];
+  /** URL для запроса данных по покемону по API * */
+  url: string;
+};
+
+/**
+ * Объект с информацией о покемоне для индивидуальной страницы
+ */
+
+export type PokemonIndividualPageObject = {
+  /** Уникальный номер * */
+  id: number;
+  /** Имя покемона * */
+  name: string;
+  /** Ссылка на изображение * */
+  image: string;
+  types: { type: { name: string; url: string } }[];
+  stats: { ['base_stat']: number; stat: { name: string; url: string } }[];
+  abilities: { ability: { name: string; url: string } }[];
+};
+
+/**
+ * Стейт индивидуальной страницы покемона
  */
 export type PokemonPageState = {
   /** URL покемона для запроса данных по API * */
   currentUrl: string;
   /** Полученные данные о покемоне * */
-  currentPokemon: {
-    /** Уникальный номер * */
-    id: number;
-    /** Имя покемона * */
-    name: string;
-    /** Ссылка на изображение * */
-    image: string;
-    types: { type: { name: string; url: string } }[];
-    stats: { ['base_stat']: number; stat: { name: string; url: string } }[];
-    abilities: { ability: { name: string; url: string } }[];
-  };
+  currentPokemon: PokemonIndividualPageObject;
   /** Названия и описание специальных возможностей покемонов * */
   abilities: { name: string; description: string }[];
 };
@@ -55,34 +94,7 @@ export type PokemonPaginationState = {
   /** Есть ли что отображать по поисковому запросу * */
   searchFailed: boolean;
   /** Данные покемонов, добавленные для сравнения * */
-  comparisonItems: {
-    /** Уникальный номер * */
-    id: number;
-    /** Имя покемона * */
-    pokemonName: string;
-    /** Изображение покемона * */
-    image: string;
-    /** Показатель здоровья * */
-    hp: number;
-    /** Показатель урона * */
-    attack: number;
-    /** Показатель защиты * */
-    defence: number;
-    /** Показатель специальной атаки * */
-    specialAttack: number;
-    /** Показатель специальной защиты * */
-    specialDefence: number;
-    /** Показатель скорости * */
-    speed: number;
-    /** Рост покемона * */
-    height: number;
-    /** Вес покемона * */
-    weight: number;
-    /** Способности покемона * */
-    abilities: { ability: { name: string } }[];
-    /** URL для запроса данных по покемону по API * */
-    url: string;
-  }[];
+  comparisonItems: PokemonComparisonObject[];
   /** Общее количество покемонов * */
   totalQuantity: number;
   /** количество отображаемых покемонов на страние для запроса по API * */
